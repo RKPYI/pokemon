@@ -50,8 +50,50 @@ const GENERATIONS = {
   const GAME_CONFIG = {
     initialCoins: 0,
     initialCatchInterval: 5000, // 5 seconds
-    upgradeCost: 10,
+    
+    // Speed upgrade
+    speedUpgradeCost: 10,
     upgradeSpeedDecrease: 500, // 0.5 seconds faster
     minCatchInterval: 1000, // Minimum 1 second
-    catchReward: 1, // Coins per catch
+    
+    // Catch quality upgrade
+    qualityUpgradeCost: 25,
+    qualityUpgradeAmount: 0.1, // 10% better chance per level
+    maxQualityLevel: 5,
+    
+    // Coin multiplier upgrade
+    coinMultiplierCost: 50,
+    coinMultiplierIncrease: 1, // +1 coin per catch per level
+    maxCoinMultiplierLevel: 5,
+    
+    // Auto-release upgrade
+    autoReleaseCost: 100,
+    autoReleaseValue: {
+      common: 1,
+      rare: 3,
+      legendary: 10
+    },
+    
+    // Poké Ball upgrades
+    pokeBallUpgrades: {
+      greatBall: {
+        cost: 200,
+        bonus: 0.15, // 15% better catch rate
+        unlockGen: 1
+      },
+      ultraBall: {
+        cost: 500,
+        bonus: 0.3, // 30% better catch rate
+        unlockGen: 2
+      },
+      masterBall: {
+        cost: 1000,
+        bonus: 0.5, // 50% better catch rate
+        unlockGen: 3
+      }
+    },
+    
+    // Base values
+    catchReward: 1, // Base coins per catch
+    catchRateBonus: 0, // Initial catch rate bonus
   };

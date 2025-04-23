@@ -102,8 +102,8 @@ class PokemonGame {
     }
     
     upgradeSpeed() {
-      if (this.coins >= GAME_CONFIG.upgradeCost && this.catchInterval > GAME_CONFIG.minCatchInterval) {
-        this.coins -= GAME_CONFIG.upgradeCost;
+      if (this.coins >= GAME_CONFIG.speedUpgradeCost && this.catchInterval > GAME_CONFIG.minCatchInterval) {
+        this.coins -= GAME_CONFIG.speedUpgradeCost;
         this.catchInterval -= GAME_CONFIG.upgradeSpeedDecrease;
         this.saveGame();
         return true;

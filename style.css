@@ -14,11 +14,13 @@ body {
   
   /* Stats Panel */
   .stats-panel {
-    width: 250px;
+    width: 300px;
     background: #2c3e50;
     color: white;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    height: 100vh;
   }
   
   .stats-panel h2, .stats-panel h3 {
@@ -34,11 +36,13 @@ body {
     justify-content: space-between;
   }
   
-  .upgrades {
+  .upgrades, .poke-balls, .gen-mastery {
     margin-top: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #3498db;
   }
   
-  .upgrades button {
+  .upgrades button, .poke-balls button {
     background: #3498db;
     color: white;
     border: none;
@@ -50,13 +54,43 @@ body {
     transition: background 0.3s;
   }
   
-  .upgrades button:hover {
+  .upgrades button:hover, .poke-balls button:hover {
     background: #2980b9;
   }
   
-  .upgrades button:disabled {
+  .upgrades button:disabled, .poke-balls button:disabled {
     background: #95a5a6;
     cursor: not-allowed;
+  }
+  
+  /* Pokeball upgrade styles */
+  .poke-balls button#upgrade-greatball {
+    background: #3498db;
+  }
+  
+  .poke-balls button#upgrade-ultraball {
+    background: #9b59b6;
+  }
+  
+  .poke-balls button#upgrade-masterball {
+    background: #e74c3c;
+  }
+  
+  .poke-balls button#upgrade-greatball:hover {
+    background: #2980b9;
+  }
+  
+  .poke-balls button#upgrade-ultraball:hover {
+    background: #8e44ad;
+  }
+  
+  .poke-balls button#upgrade-masterball:hover {
+    background: #c0392b;
+  }
+  
+  /* Generation Mastery styles */
+  .gen-mastery .stat-item span:last-child {
+    font-size: 0.9em;
   }
   
   /* Main Game Area */
@@ -95,6 +129,11 @@ body {
     padding: 10px;
     border-radius: 8px;
     background: #f9f9f9;
+  }
+  
+  .catch-item.auto-released {
+    background: #e8f5e9;
+    border: 1px dashed #81c784;
   }
   
   /* Pokédex */
@@ -223,8 +262,63 @@ body {
     animation: pulse 2s infinite;
   }
   
+  /* Tooltip styles */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+  }
+  
+  .tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85em;
+  }
+  
+  .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Active upgrade indicators */
+  .active-bonus {
+    color: #2ecc71;
+    font-weight: bold;
+  }
+  
+  /* Auto-released indicator */
+  .auto-released-text {
+    color: #27ae60;
+    font-style: italic;
+  }
+  
   @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); }
     70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); }
     100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .game-container {
+      flex-direction: column;
+    }
+    
+    .stats-panel {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+    }
   }
