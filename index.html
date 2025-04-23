@@ -31,10 +31,89 @@
         <span class="stat-label">Generation:</span>
         <span id="current-gen">1</span>
       </div>
+      <div class="stat-item">
+        <span class="stat-label">Quality Level:</span>
+        <span id="quality-level">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Coin Multiplier:</span>
+        <span id="coin-multiplier">1x</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Auto-Release:</span>
+        <span id="auto-release">Inactive</span>
+      </div>
       
       <div class="upgrades">
-        <h3>Upgrades</h3>
-        <button id="upgrade-speed">Upgrade Catch Speed (Cost: 10)</button>
+        <h3>Basic Upgrades</h3>
+        <div class="tooltip">
+          <button id="upgrade-speed">Upgrade Catch Speed (Cost: 10)</button>
+          <span class="tooltip-text">Decreases time between catches by 0.5 seconds. Min: 1 second.</span>
+        </div>
+        
+        <div class="tooltip">
+          <button id="upgrade-quality">Upgrade Catch Quality (Cost: 25)</button>
+          <span class="tooltip-text">Increases catch rate by 10% per level. Max level: 5.</span>
+        </div>
+        
+        <div class="tooltip">
+          <button id="upgrade-multiplier">Upgrade Coin Multiplier (Cost: 50)</button>
+          <span class="tooltip-text">Earn +1 coin per catch for each level. Max level: 5.</span>
+        </div>
+        
+        <div class="tooltip">
+          <button id="upgrade-autorelease">Unlock Auto-Release (Cost: 100)</button>
+          <span class="tooltip-text">Automatically convert duplicates into coins: Common: 1, Rare: 3, Legendary: 10.</span>
+        </div>
+      </div>
+      
+      <div class="poke-balls">
+        <h3>Poké Ball Upgrades</h3>
+        <div class="stat-item">
+          <span class="stat-label">Great Ball:</span>
+          <span id="greatball-status">Inactive</span>
+        </div>
+        <div class="tooltip">
+          <button id="upgrade-greatball">Buy Great Ball (Cost: 200)</button>
+          <span class="tooltip-text">Increases catch rate by 15% for all Pokémon.</span>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-label">Ultra Ball:</span>
+          <span id="ultraball-status">Inactive</span>
+        </div>
+        <div class="tooltip">
+          <button id="upgrade-ultraball">Buy Ultra Ball (Cost: 500)</button>
+          <span class="tooltip-text">Increases catch rate by 30% for all Pokémon. Unlocks in Gen 2.</span>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-label">Master Ball:</span>
+          <span id="masterball-status">Inactive</span>
+        </div>
+        <div class="tooltip">
+          <button id="upgrade-masterball">Buy Master Ball (Cost: 1000)</button>
+          <span class="tooltip-text">Increases catch rate by 50% for all Pokémon. Unlocks in Gen 3.</span>
+        </div>
+      </div>
+      
+      <div class="gen-mastery">
+        <h3>Generation Mastery</h3>
+        <div class="stat-item tooltip">
+          <span class="stat-label">Gen 1:</span>
+          <span id="gen1-mastery">Not Mastered</span>
+          <span class="tooltip-text">Complete Gen 1 Pokédex to earn 2x coins for all Gen 1 Pokémon.</span>
+        </div>
+        <div class="stat-item tooltip">
+          <span class="stat-label">Gen 2:</span>
+          <span id="gen2-mastery">Not Mastered</span>
+          <span class="tooltip-text">Complete Gen 2 Pokédex to earn 2x coins for all Gen 2 Pokémon.</span>
+        </div>
+        <div class="stat-item tooltip">
+          <span class="stat-label">Gen 3:</span>
+          <span id="gen3-mastery">Not Mastered</span>
+          <span class="tooltip-text">Complete Gen 3 Pokédex to earn 2x coins for all Gen 3 Pokémon.</span>
+        </div>
       </div>
     </div>
 
