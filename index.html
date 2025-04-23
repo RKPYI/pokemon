@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idle Pokémon Catcher</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <!-- Player Stats Panel -->
+    <div class="stats-panel">
+      <h2>Player Stats</h2>
+      <div class="stat-item">
+        <span class="stat-label">Total Caught:</span>
+        <span id="total-caught">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Coins:</span>
+        <span id="coins">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Catch Speed:</span>
+        <span id="catch-speed">5</span> seconds
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Catch Amount:</span>
+        <span id="catch-amount">1</span> at once
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Generation:</span>
+        <span id="current-gen">1</span>
+      </div>
+      
+      <div class="upgrades">
+        <h3>Upgrades</h3>
+        <button id="upgrade-speed">Upgrade Catch Speed (Cost: 10)</button>
+      </div>
+    </div>
+
+    <!-- Main Game Area -->
+    <div class="main-area">
+      <h1>Idle Pokémon Catcher</h1>
+      
+      <div class="pokemon-card" id="pokemon-container">
+        <p>Waiting to catch Pokémon...</p>
+      </div>
+      
+      <h2>Your Pokédex <span id="pokedex-progress">(0/151)</span></h2>
+      
+      <!-- Sort options -->
+      <div class="sort-options">
+        <label for="sort-by">Sort by:</label>
+        <select id="sort-by">
+          <option value="rarity">Rarity</option>
+          <option value="amount">Amount</option>
+          <option value="gen">Generation</option>
+          <option value="type">Type</option>
+        </select>
+      </div>
+      
+      <!-- Pokédex -->
+      <div class="pokedex" id="pokedex"></div>
+    </div>
+  </div>
+
+  <!-- Load JS Files -->
+  <script src="data.js"></script>
+  <script src="gameLogic.js"></script>
+  <script src="ui.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
