@@ -92,7 +92,7 @@ body {
   .gen-mastery .stat-item span:last-child {
     font-size: 0.9em;
   }
-  
+
   /* Main Game Area */
   .main-area {
     flex: 1;

@@ -102,7 +102,7 @@ class GameUI {
       
       container.appendChild(entry);
     }
-    
+
     // Update a single Pokémon entry without re-rendering the entire Pokédex
     updatePokemonEntry(pokemon) {
       const existingEntry = document.getElementById(`poke-${pokemon.name.toLowerCase()}`);

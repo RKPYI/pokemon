@@ -38,7 +38,7 @@ const GENERATIONS = {
     steel: "#B8B8D0",
     fairy: "#EE99AC"
   };
-  
+    
   // Type rarity categorization
   const TYPE_RARITY = {
     common: ["normal", "bug", "grass", "fire", "water", "electric"],

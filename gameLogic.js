@@ -74,7 +74,7 @@ class PokemonGame {
       for (let type of types) {
         if (TYPE_RARITY.rare.includes(type)) return "rare";
       }
-      
+     
       return "common";
     }
     
