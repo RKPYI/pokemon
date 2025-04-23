@@ -63,6 +63,10 @@ class GameUI {
         this.currentSortBy = e.target.value;
         this.renderPokedex(this.currentSortBy);
         });
+
+        // Setup collapsible sections for mobile
+        this.setupCollapsibleSections();
+
     }
   
     updateStats() {
@@ -427,5 +431,81 @@ class GameUI {
           this.showGenerationComplete(this.game.currentGen - 1);
         }
       }, this.game.catchInterval);
+    }
+
+    setupCollapsibleSections() {
+        // First, modify the HTML structure for the collapsible sections
+        const sections = [
+            { title: 'Basic Upgrades', id: 'upgrades' },
+            { title: 'Poké Ball Upgrades', id: 'poke-balls' },
+            { title: 'Generation Mastery', id: 'gen-mastery' }
+        ];
+        
+        sections.forEach(section => {
+            const container = document.querySelector(`.${section.id}`);
+            if (container) {
+            // Get the original content
+            const header = container.querySelector('h3');
+            const content = document.createElement('div');
+            
+            // Move all elements except the header to the content div
+            Array.from(container.children).forEach(child => {
+                if (child !== header) {
+                content.appendChild(child);
+                }
+            });
+            
+            // Replace header with collapsible header
+            if (header) {
+                header.classList.add('collapsible-header');
+                container.replaceChild(header, header);
+            }
+            
+            // Add the content container
+            content.classList.add('collapsible-content');
+            container.appendChild(content);
+            
+            // Add click listener to header
+            if (header) {
+                header.addEventListener('click', () => {
+                // Check if we're in mobile view
+                if (window.innerWidth <= 768) {
+                    header.classList.toggle('active');
+                    content.classList.toggle('active');
+                }
+                });
+            }
+            }
+        });
+        
+        // Initially expand the first section on mobile
+        const firstHeader = document.querySelector('.collapsible-header');
+        const firstContent = document.querySelector('.collapsible-content');
+        if (window.innerWidth <= 768 && firstHeader && firstContent) {
+            firstHeader.classList.add('active');
+            firstContent.classList.add('active');
+        }
+        
+        // Add resize listener to handle transitions between desktop and mobile
+        window.addEventListener('resize', () => {
+            const headers = document.querySelectorAll('.collapsible-header');
+            const contents = document.querySelectorAll('.collapsible-content');
+            
+            if (window.innerWidth > 768) {
+            // In desktop view, make sure all sections are expanded
+            contents.forEach(content => content.classList.add('active'));
+            } else {
+            // In mobile view, collapse all except the first one
+            headers.forEach((header, index) => {
+                if (index === 0) {
+                header.classList.add('active');
+                contents[index].classList.add('active');
+                } else {
+                header.classList.remove('active');
+                contents[index].classList.remove('active');
+                }
+            });
+            }
+        });
     }
   }
