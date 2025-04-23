@@ -8,44 +8,214 @@ class GameUI {
       this.initUI();
     }
     
+
     initUI() {
-      // Initialize UI elements
-      this.updateStats();
-      this.renderPokedex();
-      
-      // Set up event listeners
-      document.getElementById('upgrade-speed').addEventListener('click', () => {
+        // Initialize UI elements
+        this.updateStats();
+        this.renderPokedex();
+        
+        // Set up event listeners for basic upgrades
+        document.getElementById('upgrade-speed').addEventListener('click', () => {
         if (this.game.upgradeSpeed()) {
-          this.updateStats();
-          this.restartGameLoop();
+            this.updateStats();
+            this.restartGameLoop();
         }
-      });
-      
-      document.getElementById('sort-by').addEventListener('change', (e) => {
+        });
+        
+        document.getElementById('upgrade-quality').addEventListener('click', () => {
+        if (this.game.upgradeQuality()) {
+            this.updateStats();
+        }
+        });
+        
+        document.getElementById('upgrade-multiplier').addEventListener('click', () => {
+        if (this.game.upgradeCoinMultiplier()) {
+            this.updateStats();
+        }
+        });
+        
+        document.getElementById('upgrade-autorelease').addEventListener('click', () => {
+        if (this.game.enableAutoRelease()) {
+            this.updateStats();
+        }
+        });
+        
+        // Set up event listeners for Pokeball upgrades
+        document.getElementById('upgrade-greatball').addEventListener('click', () => {
+        if (this.game.upgradePokeBall('greatBall')) {
+            this.updateStats();
+        }
+        });
+        
+        document.getElementById('upgrade-ultraball').addEventListener('click', () => {
+        if (this.game.upgradePokeBall('ultraBall')) {
+            this.updateStats();
+        }
+        });
+        
+        document.getElementById('upgrade-masterball').addEventListener('click', () => {
+        if (this.game.upgradePokeBall('masterBall')) {
+            this.updateStats();
+        }
+        });
+        
+        document.getElementById('sort-by').addEventListener('change', (e) => {
         this.currentSortBy = e.target.value;
         this.renderPokedex(this.currentSortBy);
-      });
+        });
+    }
+  
+    updateStats() {
+        // Update player stats in UI
+        document.getElementById('coins').textContent = this.game.coins;
+        document.getElementById('total-caught').textContent = this.game.totalCaught;
+        document.getElementById('catch-speed').textContent = (this.game.catchInterval / 1000).toFixed(1);
+        document.getElementById('catch-amount').textContent = this.game.catchAmount;
+        document.getElementById('current-gen').textContent = this.game.currentGen;
+        document.getElementById('quality-level').textContent = this.game.qualityLevel || 0;
+        document.getElementById('coin-multiplier').textContent = `${this.game.coinMultiplier || 1}x`;
+        document.getElementById('auto-release').textContent = this.game.autoReleaseEnabled ? 'Active' : 'Inactive';
+        
+        // Update Pokédex progress
+        const stats = this.game.getPokedexStats();
+        document.getElementById('pokedex-progress').textContent = `(${stats.caught}/${stats.total})`;
+        
+        // Update upgrade button states
+        this.updateUpgradeButtons();
+        
+        // Update Pokeball statuses
+        this.updatePokeballStatus();
+        
+        // Update Generation Mastery status
+        this.updateGenMasteryStatus();
+    }
+  
+    updateUpgradeButtons() {
+        // Speed upgrade
+        const speedBtn = document.getElementById('upgrade-speed');
+        speedBtn.disabled = this.game.coins < GAME_CONFIG.speedUpgradeCost || this.game.catchInterval <= GAME_CONFIG.minCatchInterval;
+        speedBtn.textContent = `Upgrade Catch Speed (Cost: ${GAME_CONFIG.speedUpgradeCost})`;
+        
+        // Quality upgrade
+        const qualityBtn = document.getElementById('upgrade-quality');
+        const qualityLevel = this.game.qualityLevel || 0;
+        qualityBtn.disabled = this.game.coins < GAME_CONFIG.qualityUpgradeCost || qualityLevel >= GAME_CONFIG.maxQualityLevel;
+        qualityBtn.textContent = `Upgrade Catch Quality (Cost: ${GAME_CONFIG.qualityUpgradeCost})`;
+        
+        // Coin multiplier upgrade
+        const multiplierBtn = document.getElementById('upgrade-multiplier');
+        const multiplierLevel = this.game.coinMultiplierLevel || 0;
+        multiplierBtn.disabled = this.game.coins < GAME_CONFIG.coinMultiplierCost || multiplierLevel >= GAME_CONFIG.maxCoinMultiplierLevel;
+        multiplierBtn.textContent = `Upgrade Coin Multiplier (Cost: ${GAME_CONFIG.coinMultiplierCost})`;
+        
+        // Auto-release upgrade
+        const autoReleaseBtn = document.getElementById('upgrade-autorelease');
+        autoReleaseBtn.disabled = this.game.coins < GAME_CONFIG.autoReleaseCost || this.game.autoReleaseEnabled;
+        autoReleaseBtn.textContent = `Unlock Auto-Release (Cost: ${GAME_CONFIG.autoReleaseCost})`;
     }
     
-    updateStats() {
-      // Update player stats in UI
-      document.getElementById('coins').textContent = this.game.coins;
-      document.getElementById('total-caught').textContent = this.game.totalCaught;
-      document.getElementById('catch-speed').textContent = (this.game.catchInterval / 1000).toFixed(1);
-      document.getElementById('catch-amount').textContent = this.game.catchAmount;
-      document.getElementById('current-gen').textContent = this.game.currentGen;
-      
-      // Update Pokédex progress
-      const stats = this.game.getPokedexStats();
-      document.getElementById('pokedex-progress').textContent = `(${stats.caught}/${stats.total})`;
-      
-      // Update upgrade button state
-      const upgradeBtn = document.getElementById('upgrade-speed');
-      if (this.game.coins < GAME_CONFIG.upgradeCost || this.game.catchInterval <= GAME_CONFIG.minCatchInterval) {
-        upgradeBtn.disabled = true;
-      } else {
-        upgradeBtn.disabled = false;
-      }
+    updatePokeballStatus() {
+        // Great Ball status
+        const greatBallStatus = document.getElementById('greatball-status');
+        const greatBallBtn = document.getElementById('upgrade-greatball');
+        
+        if (this.game.pokeBalls && this.game.pokeBalls.greatBall) {
+        greatBallStatus.textContent = 'Active';
+        greatBallStatus.classList.add('active-bonus');
+        greatBallBtn.disabled = true;
+        } else {
+        greatBallStatus.textContent = 'Inactive';
+        greatBallStatus.classList.remove('active-bonus');
+        greatBallBtn.disabled = this.game.coins < GAME_CONFIG.pokeBallUpgrades.greatBall.cost || 
+                                this.game.currentGen < GAME_CONFIG.pokeBallUpgrades.greatBall.unlockGen;
+        }
+        
+        // Ultra Ball status
+        const ultraBallStatus = document.getElementById('ultraball-status');
+        const ultraBallBtn = document.getElementById('upgrade-ultraball');
+        
+        if (this.game.pokeBalls && this.game.pokeBalls.ultraBall) {
+        ultraBallStatus.textContent = 'Active';
+        ultraBallStatus.classList.add('active-bonus');
+        ultraBallBtn.disabled = true;
+        } else {
+        ultraBallStatus.textContent = 'Inactive';
+        ultraBallStatus.classList.remove('active-bonus');
+        ultraBallBtn.disabled = this.game.coins < GAME_CONFIG.pokeBallUpgrades.ultraBall.cost || 
+                                this.game.currentGen < GAME_CONFIG.pokeBallUpgrades.ultraBall.unlockGen;
+        }
+        
+        // Master Ball status
+        const masterBallStatus = document.getElementById('masterball-status');
+        const masterBallBtn = document.getElementById('upgrade-masterball');
+        
+        if (this.game.pokeBalls && this.game.pokeBalls.masterBall) {
+        masterBallStatus.textContent = 'Active';
+        masterBallStatus.classList.add('active-bonus');
+        masterBallBtn.disabled = true;
+        } else {
+        masterBallStatus.textContent = 'Inactive';
+        masterBallStatus.classList.remove('active-bonus');
+        masterBallBtn.disabled = this.game.coins < GAME_CONFIG.pokeBallUpgrades.masterBall.cost || 
+                                this.game.currentGen < GAME_CONFIG.pokeBallUpgrades.masterBall.unlockGen;
+        }
+    }
+    
+    updateGenMasteryStatus() {
+        // Update the generation mastery status for each generation
+        for (let gen = 1; gen <= 3; gen++) {
+        const genMasteryElement = document.getElementById(`gen${gen}-mastery`);
+        if (this.game.genMastery && this.game.genMastery[gen]) {
+            genMasteryElement.textContent = 'Mastered (2x coins)';
+            genMasteryElement.classList.add('active-bonus');
+        } else {
+            genMasteryElement.textContent = 'Not Mastered';
+            genMasteryElement.classList.remove('active-bonus');
+        }
+        }
+    }
+    
+    // Show generation mastery notification
+    showGenMasteryComplete(gen) {
+        const banner = document.createElement('div');
+        banner.classList.add('gen-complete');
+        banner.innerHTML = `
+        <h3>Generation ${gen} Mastered!</h3>
+        <p>You've caught every Pokémon from Generation ${gen}!</p>
+        <p>You now earn 2x coins for all Generation ${gen} Pokémon!</p>
+        `;
+        
+        // Insert after the pokemon-card
+        const pokemonCard = document.getElementById('pokemon-container');
+        pokemonCard.parentNode.insertBefore(banner, pokemonCard.nextSibling);
+        
+        // Remove after 10 seconds
+        setTimeout(() => {
+        if (banner.parentNode) {
+            banner.parentNode.removeChild(banner);
+        }
+        }, 10000);
+    }
+    
+    // Extended startGameLoop to check for mastery
+    startGameLoop() {
+        this.game.intervalId = setInterval(async () => {
+        const results = await this.game.catchPokemon();
+        this.displayCatchResults(results);
+        this.updateStats();
+        
+        // Check if we just completed a generation
+        if (this.game.checkGenerationCompletion()) {
+            this.showGenerationComplete(this.game.currentGen - 1);
+        }
+        
+        // Check for newly achieved generation mastery
+        for (let gen = 1; gen <= this.game.currentGen; gen++) {
+            if (this.game.checkGenMastery(gen)) {
+            this.showGenMasteryComplete(gen);
+            }
+        }
+        }, this.game.catchInterval);
     }
     
     renderPokedex(sortBy = 'rarity') {
@@ -102,7 +272,7 @@ class GameUI {
       
       container.appendChild(entry);
     }
-
+    
     // Update a single Pokémon entry without re-rendering the entire Pokédex
     updatePokemonEntry(pokemon) {
       const existingEntry = document.getElementById(`poke-${pokemon.name.toLowerCase()}`);
