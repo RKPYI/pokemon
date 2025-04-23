@@ -434,77 +434,81 @@ class GameUI {
     }
 
     setupCollapsibleSections() {
-        // First, modify the HTML structure for the collapsible sections
+        // Only apply collapsible functionality on mobile
+        if (window.innerWidth > 768) return;
+        
+        // Sections to make collapsible
         const sections = [
             { title: 'Basic Upgrades', id: 'upgrades' },
             { title: 'Poké Ball Upgrades', id: 'poke-balls' },
             { title: 'Generation Mastery', id: 'gen-mastery' }
         ];
         
-        sections.forEach(section => {
+        sections.forEach((section, index) => {
             const container = document.querySelector(`.${section.id}`);
-            if (container) {
-            // Get the original content
-            const header = container.querySelector('h3');
-            const content = document.createElement('div');
+            if (!container) return;
             
-            // Move all elements except the header to the content div
-            Array.from(container.children).forEach(child => {
-                if (child !== header) {
-                content.appendChild(child);
-                }
+            // Get the heading
+            const heading = container.querySelector('h3');
+            if (!heading) return;
+            
+            // Make heading clickable
+            heading.style.cursor = 'pointer';
+            heading.style.position = 'relative';
+            heading.style.paddingRight = '20px';
+            
+            // Add indicator (+ or -)
+            const indicator = document.createElement('span');
+            indicator.style.position = 'absolute';
+            indicator.style.right = '5px';
+            indicator.style.fontWeight = 'bold';
+            indicator.textContent = index === 0 ? '-' : '+';
+            heading.appendChild(indicator);
+            
+            // Get all content elements after the heading
+            const contentElements = [];
+            let el = heading.nextElementSibling;
+            while (el) {
+                contentElements.push(el);
+                el = el.nextElementSibling;
+            }
+            
+            // Create a wrapper for the content
+            const contentWrapper = document.createElement('div');
+            contentWrapper.style.display = index === 0 ? 'block' : 'none';
+            
+            // Move elements into the wrapper
+            contentElements.forEach(element => {
+                contentWrapper.appendChild(element);
             });
             
-            // Replace header with collapsible header
-            if (header) {
-                header.classList.add('collapsible-header');
-                container.replaceChild(header, header);
-            }
+            // Add the wrapper after the heading
+            heading.parentNode.insertBefore(contentWrapper, heading.nextSibling);
             
-            // Add the content container
-            content.classList.add('collapsible-content');
-            container.appendChild(content);
-            
-            // Add click listener to header
-            if (header) {
-                header.addEventListener('click', () => {
-                // Check if we're in mobile view
-                if (window.innerWidth <= 768) {
-                    header.classList.toggle('active');
-                    content.classList.toggle('active');
+            // Add click handler to toggle visibility
+            heading.addEventListener('click', function() {
+                if (contentWrapper.style.display === 'none') {
+                    contentWrapper.style.display = 'block';
+                    indicator.textContent = '-';
+                } else {
+                    contentWrapper.style.display = 'none';
+                    indicator.textContent = '+';
                 }
-                });
-            }
-            }
+            });
         });
         
-        // Initially expand the first section on mobile
-        const firstHeader = document.querySelector('.collapsible-header');
-        const firstContent = document.querySelector('.collapsible-content');
-        if (window.innerWidth <= 768 && firstHeader && firstContent) {
-            firstHeader.classList.add('active');
-            firstContent.classList.add('active');
-        }
-        
-        // Add resize listener to handle transitions between desktop and mobile
-        window.addEventListener('resize', () => {
-            const headers = document.querySelectorAll('.collapsible-header');
-            const contents = document.querySelectorAll('.collapsible-content');
-            
+        // Listen for resize and revert to normal view on desktop
+        window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
-            // In desktop view, make sure all sections are expanded
-            contents.forEach(content => content.classList.add('active'));
-            } else {
-            // In mobile view, collapse all except the first one
-            headers.forEach((header, index) => {
-                if (index === 0) {
-                header.classList.add('active');
-                contents[index].classList.add('active');
-                } else {
-                header.classList.remove('active');
-                contents[index].classList.remove('active');
-                }
-            });
+                sections.forEach(section => {
+                    const container = document.querySelector(`.${section.id}`);
+                    if (!container) return;
+                    
+                    const contentWrappers = container.querySelectorAll('div');
+                    contentWrappers.forEach(wrapper => {
+                        wrapper.style.display = 'block';
+                    });
+                });
             }
         });
     }

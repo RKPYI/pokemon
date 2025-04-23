@@ -464,7 +464,7 @@ font-style: italic;
     height: auto;
     max-height: 250px;
     overflow-y: auto;
-    position: sticky;
+    /* position: sticky; */
     top: 0;
     z-index: 10;
     padding: 10px;
