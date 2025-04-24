@@ -98,10 +98,17 @@ font-size: 0.9em;
 
 /* Main Game Area */
 .main-area {
+position: relative;
 flex: 1;
 padding: 20px;
 overflow-y: auto;
 text-align: center;
+}
+
+.main-area .gameVersion {
+  position: absolute;
+  left: 25px;
+  font-size: 10px;
 }
 
 /* Pokémon Card */
