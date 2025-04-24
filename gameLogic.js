@@ -129,7 +129,7 @@ class PokemonGame {
       if (rarity === 'common') return 0.1;      // 10% miss chance
       if (rarity === 'rare') return 0.5;        // 50% miss chance
       if (rarity === 'legendary') return 0.8;   // 80% miss chance
-      if (rarity === 'mythical') return 0.95;   // 95% miss chance
+      if (rarity === 'mythical') return 0.8;   // 80% miss chance (can't be boosted)
       return 0;
     }
     
@@ -137,6 +137,7 @@ class PokemonGame {
       if (id <= GENERATIONS[1].end) return 1;
       if (id <= GENERATIONS[2].end) return 2;
       if (id <= GENERATIONS[3].end) return 3;
+      if (id <= GENERATIONS[4].end) return 4;
       return 1; // Default to Gen 1 if ID is out of range
     }
     
@@ -159,92 +160,7 @@ class PokemonGame {
       return false;
     }
     
-// Game logic and mechanics - Only showing the updated catchPokemon function
-
-    async catchPokemon() {
-        const results = [];
-        const pokemonPromises = [];
-        
-        // Create all fetch promises at once
-        for (let i = 0; i < this.catchAmount; i++) {
-        const id = this.getRandomPokemonId();
-        pokemonPromises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-            .then(res => res.json())
-            .catch(error => {
-            console.error(`Error fetching Pokémon #${id}:`, error);
-            return { error: true, id: id };
-            }));
-        }
-        
-        // Wait for all fetch operations to complete in parallel
-        const pokemonData = await Promise.all(pokemonPromises);
-        
-        // Process catch results
-        pokemonData.forEach(data => {
-        if (data.error) {
-            results.push({
-            caught: false,
-            error: true
-            });
-            return;
-        }
-        
-        const name = data.name.toUpperCase();
-        const types = data.types.map(type => type.type.name);
-        const generation = this.getPokemonGeneration(data.id);
-        const rarity = this.getRarityByType(types, name);
-        const missChance = this.getMissChance(rarity);
-        
-        // Miss logic
-        if (Math.random() < missChance) {
-            results.push({
-            caught: false,
-            rarity: rarity
-            });
-            return;
-        }
-        
-        // Success
-        this.coins += GAME_CONFIG.catchReward;
-        this.totalCaught++;
-        
-        const img = data.sprites.front_default;
-        
-        // Check if this is a new Pokémon
-        const isDuplicate = this.pokemonCollection.has(name);
-        
-        // Update collection
-        if (isDuplicate) {
-            const pokemonData = this.pokemonCollection.get(name);
-            pokemonData.count++;
-            this.pokemonCollection.set(name, pokemonData);
-        } else {
-            this.pokemonCollection.set(name, {
-            count: 1,
-            gen: generation,
-            types: types,
-            rarity: rarity,
-            id: data.id
-            });
-            this.uniquePokemonCount++;
-        }
-        
-        results.push({
-            caught: true,
-            name: name,
-            img: img,
-            types: types,
-            rarity: rarity,
-            isDuplicate: isDuplicate,
-            generation: generation
-        });
-        });
-        
-        this.saveGame();
-        this.checkGenerationCompletion();
-        
-        return results;
-    }
+    // Game logic and mechanics - Only showing the updated catchPokemon function
     
     checkGenerationCompletion() {
       // For each generation the player has access to
@@ -259,7 +175,7 @@ class PokemonGame {
         });
         
         // Check if we completed this generation and haven't unlocked next gen yet
-        if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < 3) {
+        if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < 4) {
           this.currentGen++;
           this.catchAmount = this.currentGen;
           this.saveGame();
@@ -506,12 +422,23 @@ class PokemonGame {
         const missChance = Math.max(0, this.getMissChance(rarity) - this.getCatchRateBonus());
         
         // Miss logic
-        if (Math.random() < missChance) {
+        if (rarity === "mythical") {
+          const mythicalMissChance = this.getMissChance(rarity);
+          if (Math.random() < mythicalMissChance) {
             results.push({
             caught: false,
             rarity: rarity
             });
             return;
+          }
+        } else {
+          if (Math.random() < missChance) {
+            results.push({
+            caught: false,
+            rarity: rarity
+            });
+            return;
+          }
         }
         
         // Success - calculate coins earned

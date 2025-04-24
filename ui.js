@@ -201,27 +201,6 @@ class GameUI {
         }, 10000);
     }
     
-    // Extended startGameLoop to check for mastery
-    startGameLoop() {
-        this.game.intervalId = setInterval(async () => {
-        const results = await this.game.catchPokemon();
-        this.displayCatchResults(results);
-        this.updateStats();
-        
-        // Check if we just completed a generation
-        if (this.game.checkGenerationCompletion()) {
-            this.showGenerationComplete(this.game.currentGen - 1);
-        }
-        
-        // Check for newly achieved generation mastery
-        for (let gen = 1; gen <= this.game.currentGen; gen++) {
-            if (this.game.checkGenMastery(gen)) {
-            this.showGenMasteryComplete(gen);
-            }
-        }
-        }, this.game.catchInterval);
-    }
-    
     renderPokedex(sortBy = 'rarity') {
       const pokedexContainer = document.getElementById('pokedex');
       pokedexContainer.innerHTML = '';
@@ -428,7 +407,14 @@ class GameUI {
         
         // Check if we just completed a generation
         if (this.game.checkGenerationCompletion()) {
-          this.showGenerationComplete(this.game.currentGen - 1);
+            this.showGenerationComplete(this.game.currentGen - 1);
+        }
+        
+        // Check for newly achieved generation mastery
+        for (let gen = 1; gen <= this.game.currentGen; gen++) {
+            if (this.game.checkGenMastery(gen)) {
+            this.showGenMasteryComplete(gen);
+            }
         }
       }, this.game.catchInterval);
     }

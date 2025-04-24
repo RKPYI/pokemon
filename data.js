@@ -21,7 +21,7 @@ const GENERATIONS = {
     // Gen 2
     "entei", "raikou", "suicune", "lugia", "ho-oh", "celebi",
     // Gen 3
-    "regirock", "regice", "registeel", "latias", "latios", "kyogre", "groudon", "rayquaza", "deoxys", "jirachi",
+    "regirock", "regice", "registeel", "latias", "latios", "kyogre", "groudon", "rayquaza", "deoxys-normal", "jirachi",
     // Gen 4
     "uxie", "mesprit", "azelf", "dialga", "palkia", "heatran", "regigigas", "giratina", "cresselia", "phione", "manaphy", "darkrai", "shaymin", "arceus",
     // Gen 5
@@ -43,7 +43,7 @@ const GENERATIONS = {
     // Gen 2
     "celebi",
     // Gen 3
-    "jirachi", "deoxys",
+    "jirachi", "deoxys-normal",
     // Gen 4
     "phione", "manaphy", "darkrai", "shaymin", "arceus",
     // Gen 5
