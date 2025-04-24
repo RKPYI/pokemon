@@ -412,7 +412,7 @@ class WelcomeScreen {
         legendary: new Audio('./assets/legendary.mp3'),
         miss: new Audio('./assets/miss.mp3'),
         upgrade: new Audio('./assets/SFX_LEVEL_UP.wav'),
-        genComplete: new Audio('https://play.pokemonshowdown.com/audio/sfx/gen5/exclamation.mp3')
+        genComplete: new Audio('./assets/genComplete.mp3')
       };
       
       // Set sfx volumes
