@@ -96,6 +96,11 @@
         <button id="upgrade-autorelease">Unlock Auto-Release (Cost: 100)</button>
         <span class="tooltip-text">Automatically convert duplicates into coins: Common: 1, Rare: 3, Legendary: 10, Mythical: 50.</span>
       </div>
+
+      <div class="tooltip">
+        <button id="upgrade-mythicalbooster">Mythical Booster (Cost: <span id="mythicalBoosterCost">200</span>)</button>
+        <span class="tooltip-text">Increase chance to catch Mythical Pokémon by 1%</span>
+      </div>
     </div>
     
     <div class="poke-balls">
@@ -154,13 +159,23 @@
           <span id="gen3-mastery">Not Mastered</span>
           <span class="tooltip-text">Complete Gen 3 Pokédex to earn 2x coins for all Gen 3 Pokémon.</span>
         </div>
+        <div class="stat-item tooltip">
+          <span class="stat-label">Gen 4:</span>
+          <span id="gen4-mastery">Not Mastered</span>
+          <span class="tooltip-text">Complete Gen 4 Pokédex to earn 2x coins for all Gen 4 Pokémon.</span>
+        </div>
+        <div class="stat-item tooltip">
+          <span class="stat-label">Gen 5:</span>
+          <span id="gen5-mastery">Not Mastered</span>
+          <span class="tooltip-text">Complete Gen 5 Pokédex to earn 2x coins for all Gen 5 Pokémon.</span>
+        </div>
       </div>
     </div>
   </div>
 
     <!-- Main Game Area -->
     <div class="main-area">
-      <h1>Idle Pokémon Catcher <span class="gameVersion">1.1.4</span></h1>
+      <h1>Idle Pokémon Catcher <span class="gameVersion">1.2.0</span></h1>
       
       <div class="pokemon-card" id="pokemon-container">
         <p>Waiting to catch Pokémon...</p>

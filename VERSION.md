@@ -21,3 +21,9 @@
 ## 1.1.4
 - Adding Catch rate panel
 - Placeholder for the upcoming mythical chance booster
+
+## 1.2.0
+- Adding new Mythical booster upgrade!
+- Mythical bonus panel
+- Adding Gen 5!
+- Adding More Generation Masteries!

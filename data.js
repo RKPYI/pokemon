@@ -139,4 +139,11 @@ const GENERATIONS = {
     // Base values
     catchReward: 1, // Base coins per catch
     catchRateBonus: 0, // Initial catch rate bonus
+
+    mythicalBoosterConfig: {
+      baseCost: 200,
+      costMultiplier: 1.5,  // Each upgrade will cost 1.5x the previous
+      bonusPerLevel: 0.01,  // 1% increase per level
+      maxLevel: 20,         // Optional: cap the max upgrade level
+    },
   };

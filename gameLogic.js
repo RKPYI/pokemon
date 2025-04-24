@@ -38,7 +38,8 @@ class PokemonGame {
           catchRateBonus: this.catchRateBonus || 0,
           autoReleaseEnabled: this.autoReleaseEnabled || false,
           pokeBalls: this.pokeBalls || {},
-          genMastery: this.genMastery || {}
+          genMastery: this.genMastery || {},
+          mythicalBoosterLevel: this.mythicalBoosterLevel || 0
         };
         
         localStorage.setItem("idlePokemonGame", JSON.stringify(gameData));
@@ -63,6 +64,7 @@ class PokemonGame {
             this.autoReleaseEnabled = gameData.autoReleaseEnabled || false;
             this.pokeBalls = gameData.pokeBalls || {};
             this.genMastery = gameData.genMastery || {};
+            this.mythicalBoosterLevel = gameData.mythicalBoosterLevel || 0;
             
             // Load Pokemon collection
             if (gameData.pokemonCollection) {
@@ -138,6 +140,7 @@ class PokemonGame {
       if (id <= GENERATIONS[2].end) return 2;
       if (id <= GENERATIONS[3].end) return 3;
       if (id <= GENERATIONS[4].end) return 4;
+      if (id <= GENERATIONS[5].end) return 5;
       return 1; // Default to Gen 1 if ID is out of range
     }
     
@@ -175,7 +178,7 @@ class PokemonGame {
         });
         
         // Check if we completed this generation and haven't unlocked next gen yet
-        if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < 4) {
+        if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < 5) {
           this.currentGen++;
           this.catchAmount = Math.min(this.currentGen, 3);
           this.saveGame();
@@ -333,9 +336,38 @@ class PokemonGame {
         return bonus;
     }
 
-    // Mythical bonus
-    getMythicalCatchRateBonus() {
-
+    upgradeMythicalBooster() {
+      // Initialize booster level if not exists
+      if (!this.mythicalBoosterLevel) this.mythicalBoosterLevel = 0;
+      
+      // Calculate current upgrade cost
+      const baseCost = GAME_CONFIG.mythicalBoosterConfig.baseCost;
+      const costMultiplier = GAME_CONFIG.mythicalBoosterConfig.costMultiplier;
+      const currentCost = Math.floor(baseCost * Math.pow(costMultiplier, this.mythicalBoosterLevel));
+      
+      // Check if player can afford it
+      if (this.coins >= currentCost) {
+        this.coins -= currentCost;
+        this.mythicalBoosterLevel++;
+        this.saveGame();
+        return true;
+      }
+      return false;
+    }
+    
+    // Calculate next mythical booster upgrade cost
+    getMythicalBoosterCost() {
+      if (!this.mythicalBoosterLevel) this.mythicalBoosterLevel = 0;
+      
+      const baseCost = GAME_CONFIG.mythicalBoosterConfig.baseCost;
+      const costMultiplier = GAME_CONFIG.mythicalBoosterConfig.costMultiplier;
+      return Math.floor(baseCost * Math.pow(costMultiplier, this.mythicalBoosterLevel));
+    }
+    
+    getMythicalBoosterBonus() {
+      if (!this.mythicalBoosterLevel) return 0;
+      
+      return this.mythicalBoosterLevel * GAME_CONFIG.mythicalBoosterConfig.bonusPerLevel;
     }
     
     // Check generation mastery
@@ -428,7 +460,8 @@ class PokemonGame {
         
         // Miss logic
         if (rarity === "mythical") {
-          const mythicalMissChance = this.getMissChance(rarity);
+          const mythicalMissChance = Math.max(0, missChance - this.getMythicalBoosterBonus());
+
           if (Math.random() < mythicalMissChance) {
             results.push({
             caught: false,

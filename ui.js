@@ -39,6 +39,14 @@ class GameUI {
             this.updateStats();
         }
         });
+
+        document.getElementById('upgrade-mythicalbooster').addEventListener('click', () => {
+          if (this.game.upgradeMythicalBooster()) {
+            this.updateStats();
+            // Update the button cost
+            document.getElementById('mythicalBoosterCost').textContent = this.game.getMythicalBoosterCost();
+          }
+        });
         
         // Set up event listeners for Pokeball upgrades
         document.getElementById('upgrade-greatball').addEventListener('click', () => {
@@ -79,6 +87,7 @@ class GameUI {
         document.getElementById('quality-level').textContent = this.game.qualityLevel || 0;
         document.getElementById('coin-multiplier').textContent = `${this.game.coinMultiplier || 1}x`;
         document.getElementById('auto-release').textContent = this.game.autoReleaseEnabled ? 'Active' : 'Inactive';
+        document.getElementById('mythicalBoosterCost').textContent = this.game.getMythicalBoosterCost();
         
         // Update Pokédex progress
         const stats = this.game.getPokedexStats();
@@ -119,6 +128,9 @@ class GameUI {
         const autoReleaseBtn = document.getElementById('upgrade-autorelease');
         autoReleaseBtn.disabled = this.game.coins < GAME_CONFIG.autoReleaseCost || this.game.autoReleaseEnabled;
         autoReleaseBtn.textContent = `Unlock Auto-Release (Cost: ${GAME_CONFIG.autoReleaseCost})`;
+
+        const mythicalBoosterBtn = document.getElementById('upgrade-mythicalbooster');
+        mythicalBoosterBtn.disabled = this.game.coins < this.game.getMythicalBoosterCost();
     }
     
     updatePokeballStatus() {
@@ -170,7 +182,7 @@ class GameUI {
     
     updateGenMasteryStatus() {
         // Update the generation mastery status for each generation
-        for (let gen = 1; gen <= 3; gen++) {
+        for (let gen = 1; gen <= 5; gen++) {
         const genMasteryElement = document.getElementById(`gen${gen}-mastery`);
         if (this.game.genMastery && this.game.genMastery[gen]) {
             genMasteryElement.textContent = 'Mastered (2x coins)';
@@ -514,11 +526,13 @@ class GameUI {
       }
       
       const totalBonus = this.game.getCatchRateBonus();
+      const MythBonus = this.game.getMythicalBoosterBonus();
       
       // Update the UI elements
       document.getElementById('quality-bonus').textContent = `${(qualityBonus * 100).toFixed(0)}%`;
       document.getElementById('pokeball-bonus').textContent = `${(pokeballBonus * 100).toFixed(0)}%`;
       document.getElementById('total-bonus').textContent = `${(totalBonus * 100).toFixed(0)}%`;
+      document.getElementById('mythical-bonus').textContent = `${(MythBonus * 100).toFixed(0)}%`;
       
       // Update the progress bar
       const catchRateBar = document.getElementById('catch-rate-bar');
