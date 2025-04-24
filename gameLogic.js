@@ -111,6 +111,7 @@ class PokemonGame {
     // Game mechanics
     getRarityByType(types, name) {
       // Check for legendary by name first
+      if (MYTHICAL_POKEMON.has(name.toLowerCase())) return "mythical";
       if (LEGENDARY_POKEMON.has(name.toLowerCase())) return "legendary";
       
       // Check types for rarity
@@ -128,6 +129,7 @@ class PokemonGame {
       if (rarity === 'common') return 0.1;      // 10% miss chance
       if (rarity === 'rare') return 0.5;        // 50% miss chance
       if (rarity === 'legendary') return 0.8;   // 80% miss chance
+      if (rarity === 'mythical') return 0.95;   // 95% miss chance
       return 0;
     }
     
@@ -291,7 +293,7 @@ class PokemonGame {
       switch(sortBy) {
         case 'rarity':
           // Sort by rarity (legendary > rare > common)
-          const rarityOrder = { legendary: 0, rare: 1, common: 2 };
+          const rarityOrder = { mythical: 0, legendary: 1, rare: 2, common: 3 };
           return pokemonArray.sort((a, b) => 
             rarityOrder[a.rarity] - rarityOrder[b.rarity] || a.name.localeCompare(b.name)
           );

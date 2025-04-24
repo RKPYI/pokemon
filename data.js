@@ -35,6 +35,28 @@ const GENERATIONS = {
     // Gen 9
     "wo-chien", "chien-pao", "ting-lu", "chi-yu", "koraidon", "miraidon", "walking-wake", "iron-leaves", "ogerpon", "terapagos"
   ]);
+
+  // Mythical Pokémon by name
+  const MYTHICAL_POKEMON = new Set([
+    // Gen 1
+    "mew",
+    // Gen 2
+    "celebi",
+    // Gen 3
+    "jirachi", "deoxys",
+    // Gen 4
+    "phione", "manaphy", "darkrai", "shaymin", "arceus",
+    // Gen 5
+    "victini", "keldeo", "meloetta", "genesect",
+    // Gen 6
+    "diancie", "hoopa", "volcanion",
+    // Gen 7
+    "magearna", "marshadow", "zeraora", "meltan", "melmetal",
+    // Gen 8
+    "zarude",
+    // Gen 9
+    "walking-wake", "iron-leaves"
+  ]);
   
   // Type colors for badges
   const TYPE_COLORS = {
@@ -62,7 +84,8 @@ const GENERATIONS = {
   const TYPE_RARITY = {
     common: ["normal", "bug", "grass", "fire", "water", "electric", "flying", "poison", "ground", "rock", "ice", "steel"],
     rare: ["psychic", "ghost", "fairy", "dragon", "dark", "fighting"],
-    legendary: []
+    legendary: [],
+    mythical: []
   };
   
   // Game configuration
@@ -90,7 +113,8 @@ const GENERATIONS = {
     autoReleaseValue: {
       common: 1,
       rare: 3,
-      legendary: 10
+      legendary: 10,
+      mythical: 50
     },
     
     // Poké Ball upgrades
