@@ -60,9 +60,9 @@ const GENERATIONS = {
 
   // Type rarity categorization
   const TYPE_RARITY = {
-    common: ["normal", "bug", "grass", "fire", "water", "electric"],
-    rare: ["flying", "poison", "ground", "rock", "fighting", "psychic", "ghost", "ice", "fairy"],
-    legendary: ["dragon", "dark", "steel"]
+    common: ["normal", "bug", "grass", "fire", "water", "electric", "flying", "poison", "ground", "rock", "ice", "steel"],
+    rare: ["psychic", "ghost", "fairy", "dragon", "dark", "fighting"],
+    legendary: []
   };
   
   // Game configuration
