@@ -176,6 +176,7 @@ class WelcomeScreen {
         'upgrade-quality',
         'upgrade-multiplier',
         'upgrade-autorelease',
+        'upgrade-mythicalbooster',
         'upgrade-greatball',
         'upgrade-ultraball',
         'upgrade-masterball'

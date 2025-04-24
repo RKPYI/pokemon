@@ -27,3 +27,6 @@
 - Mythical bonus panel
 - Adding Gen 5!
 - Adding More Generation Masteries!
+
+## 1.2.1
+- Fix bugs where mythical upgrades have no sound effect when purchased.
