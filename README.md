@@ -66,6 +66,7 @@ The game consists of the following files:
 1. Clone or download the repository
 2. Open `index.html` in your browser
 3. Start catching Pokémon and building your collection!
+4. or just click here! [https://rkpyi.github.io/pokemon/]
 
 ## Requirements
 - Modern web browser with JavaScript enabled
