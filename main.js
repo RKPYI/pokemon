@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ui = new GameUI(game);
     
     // Start the game loop
-    ui.startGameLoop();
+    // ui.startGameLoop();
     
     console.log('Idle Pokémon Catcher initialized!');
   });

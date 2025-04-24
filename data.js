@@ -4,8 +4,15 @@
 const GENERATIONS = {
     1: { start: 1, end: 151 },
     2: { start: 152, end: 251 },
-    3: { start: 252, end: 386 }
+    3: { start: 252, end: 386 },
+    4: { start: 387, end: 493 },
+    5: { start: 494, end: 649 },
+    6: { start: 650, end: 721 },
+    7: { start: 722, end: 809 },
+    8: { start: 810, end: 905 },
+    9: { start: 906, end: 1025 } // As of Pokémon Scarlet & Violet + DLC
   };
+  
   
   // Legendary Pokémon by name
   const LEGENDARY_POKEMON = new Set([
@@ -14,7 +21,19 @@ const GENERATIONS = {
     // Gen 2
     "entei", "raikou", "suicune", "lugia", "ho-oh", "celebi",
     // Gen 3
-    "regirock", "regice", "registeel", "latias", "latios", "kyogre", "groudon", "rayquaza", "deoxys", "jirachi"
+    "regirock", "regice", "registeel", "latias", "latios", "kyogre", "groudon", "rayquaza", "deoxys", "jirachi",
+    // Gen 4
+    "uxie", "mesprit", "azelf", "dialga", "palkia", "heatran", "regigigas", "giratina", "cresselia", "phione", "manaphy", "darkrai", "shaymin", "arceus",
+    // Gen 5
+    "cobalion", "terrakion", "virizion", "tornadus", "thundurus", "reshiram", "zekrom", "landorus", "kyurem", "keldeo", "meloetta", "genesect",
+    // Gen 6
+    "xerneas", "yveltal", "zygarde", "diancie", "hoopa", "volcanion",
+    // Gen 7
+    "tapu-koko", "tapu-lele", "tapu-bulu", "tapu-fini", "type-null", "silvally", "cosmog", "cosmoem", "solgaleo", "lunala", "nihilego", "buzzwole", "pheromosa", "xurkitree", "celesteela", "kartana", "guzzlord", "necrozma", "magearna", "marshadow", "zeraora", "meltan", "melmetal",
+    // Gen 8
+    "zacian", "zamazenta", "eternatus", "kubfu", "urshifu", "zarude", "regieleki", "regidrago", "glastrier", "spectrier", "calyrex",
+    // Gen 9
+    "wo-chien", "chien-pao", "ting-lu", "chi-yu", "koraidon", "miraidon", "walking-wake", "iron-leaves", "ogerpon", "terapagos"
   ]);
   
   // Type colors for badges
@@ -38,7 +57,7 @@ const GENERATIONS = {
     steel: "#B8B8D0",
     fairy: "#EE99AC"
   };
-    
+
   // Type rarity categorization
   const TYPE_RARITY = {
     common: ["normal", "bug", "grass", "fire", "water", "electric"],
