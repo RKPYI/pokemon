@@ -177,7 +177,7 @@ class PokemonGame {
         // Check if we completed this generation and haven't unlocked next gen yet
         if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < 4) {
           this.currentGen++;
-          this.catchAmount = this.currentGen;
+          this.catchAmount = Math.min(this.currentGen, 3);
           this.saveGame();
           return true;
         }

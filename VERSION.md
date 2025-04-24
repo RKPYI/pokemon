@@ -10,3 +10,7 @@
 - Mythical now won't get any boost from pokeball and catch quality upgrades
 - Removing startGameLoop Dupes
 - Commenting main.js
+
+## 1.1.2
+- Max 3 catch at once
+- adding tooltip to let player know mythical doesnt get the boost
