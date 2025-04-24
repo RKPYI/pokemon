@@ -17,3 +17,7 @@
 
 ## 1.1.3
 - Fix banner "You can now catch x Pokémon at once!" to a max 3 catch
+
+## 1.1.4
+- Adding Catch rate panel
+- Placeholder for the upcoming mythical chance booster

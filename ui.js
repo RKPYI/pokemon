@@ -84,6 +84,9 @@ class GameUI {
         const stats = this.game.getPokedexStats();
         document.getElementById('pokedex-progress').textContent = `(${stats.caught}/${stats.total})`;
         
+        // Add this line to update the catch rate UI
+        this.updateCatchRateUI();
+  
         // Update upgrade button states
         this.updateUpgradeButtons();
         
@@ -497,5 +500,42 @@ class GameUI {
                 });
             }
         });
+    }
+
+    updateCatchRateUI() {
+      // Calculate the different bonus components
+      const qualityBonus = this.game.qualityLevel ? this.game.qualityLevel * GAME_CONFIG.qualityUpgradeAmount : 0;
+      
+      let pokeballBonus = 0;
+      if (this.game.pokeBalls) {
+        if (this.game.pokeBalls.greatBall) pokeballBonus += GAME_CONFIG.pokeBallUpgrades.greatBall.bonus;
+        if (this.game.pokeBalls.ultraBall) pokeballBonus += GAME_CONFIG.pokeBallUpgrades.ultraBall.bonus;
+        if (this.game.pokeBalls.masterBall) pokeballBonus += GAME_CONFIG.pokeBallUpgrades.masterBall.bonus;
+      }
+      
+      const totalBonus = this.game.getCatchRateBonus();
+      
+      // Update the UI elements
+      document.getElementById('quality-bonus').textContent = `${(qualityBonus * 100).toFixed(0)}%`;
+      document.getElementById('pokeball-bonus').textContent = `${(pokeballBonus * 100).toFixed(0)}%`;
+      document.getElementById('total-bonus').textContent = `${(totalBonus * 100).toFixed(0)}%`;
+      
+      // Update the progress bar
+      const catchRateBar = document.getElementById('catch-rate-bar');
+      const catchRateValue = document.getElementById('catch-rate-value');
+      
+      // Set the width of the bar (max at 100%)
+      const barWidth = Math.min(totalBonus * 100, 100);
+      catchRateBar.style.width = `${barWidth}%`;
+      catchRateValue.textContent = `${(totalBonus * 100).toFixed(0)}%`;
+      
+      // Change color based on the bonus amount
+      if (totalBonus >= 0.75) {
+        catchRateBar.style.backgroundColor = '#68d391'; // Green for high bonus
+      } else if (totalBonus >= 0.4) {
+        catchRateBar.style.backgroundColor = '#ffae00'; // Yellow/Orange for medium bonus
+      } else {
+        catchRateBar.style.backgroundColor = '#ff7b00'; // Orange for low bonus
+      }
     }
   }

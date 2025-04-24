@@ -332,6 +332,11 @@ class PokemonGame {
         
         return bonus;
     }
+
+    // Mythical bonus
+    getMythicalCatchRateBonus() {
+
+    }
     
     // Check generation mastery
     checkGenMastery(gen) {
