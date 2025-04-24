@@ -377,7 +377,7 @@ class GameUI {
         <h3>Generation ${generation} Complete!</h3>
         <p>You've caught all Pokémon from Generation ${generation}!</p>
         <p>Now you can catch Generation ${generation + 1} Pokémon!</p>
-        <p>You can now catch ${generation + 1} Pokémon at once!</p>
+        <p>You can now catch ${Math.min(generation + 1, 3)} Pokémon at once!</p>
       `;
       
       // Insert after the pokemon-card

@@ -14,3 +14,6 @@
 ## 1.1.2
 - Max 3 catch at once
 - adding tooltip to let player know mythical doesnt get the boost
+
+## 1.1.3
+- Fix banner "You can now catch x Pokémon at once!" to a max 3 catch
