@@ -70,12 +70,43 @@ class PokemonGame {
                 this.pokemonCollection.set(name, gameData.pokemonCollection[name]);
               });
             }
+
+            this.migrateTypeRarityData();
+            
           }
         } catch (e) {
           console.error("Error loading saved game:", e);
         }
     }
       
+    migrateTypeRarityData() {
+      // Only proceed if we have Pokémon in the collection
+      if (this.pokemonCollection.size === 0) return;
+      
+      console.log("Checking for type rarity migration needs...");
+      let migrationCount = 0;
+      
+      // For each Pokémon in the collection
+      this.pokemonCollection.forEach((data, name) => {
+          // Skip if no types data
+          if (!data.types || data.types.length === 0) return;
+          
+          // Calculate what the rarity should be based on current TYPE_RARITY
+          const newRarity = this.getRarityByType(data.types, name);
+          
+          // If the rarity is different, update it
+          if (data.rarity !== newRarity) {
+              data.rarity = newRarity;
+              migrationCount++;
+          }
+      });
+      
+      // Log the migration results
+      if (migrationCount > 0) {
+          console.log(`Updated rarity for ${migrationCount} Pokémon based on new type rarity settings.`);
+          this.saveGame(); // Save the migrated data
+      }
+    }
     
     // Game mechanics
     getRarityByType(types, name) {
