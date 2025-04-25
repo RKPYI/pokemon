@@ -23,9 +23,9 @@ const GENERATIONS = {
     // Gen 3
     "regirock", "regice", "registeel", "latias", "latios", "kyogre", "groudon", "rayquaza", "deoxys-normal", "jirachi",
     // Gen 4
-    "uxie", "mesprit", "azelf", "dialga", "palkia", "heatran", "regigigas", "giratina", "cresselia", "phione", "manaphy", "darkrai", "shaymin", "arceus",
+    "uxie", "mesprit", "azelf", "dialga", "palkia", "heatran", "regigigas", "giratina-altered", "cresselia", "phione", "manaphy", "darkrai", "shaymin-land", "arceus",
     // Gen 5
-    "cobalion", "terrakion", "virizion", "tornadus", "thundurus", "reshiram", "zekrom", "landorus", "kyurem", "keldeo", "meloetta", "genesect",
+    "cobalion", "terrakion", "virizion", "tornadus-incarnate", "thundurus-incarnate", "reshiram", "zekrom", "landorus-incarnate", "kyurem", "keldeo-ordinary", "meloetta-aria", "genesect",
     // Gen 6
     "xerneas", "yveltal", "zygarde", "diancie", "hoopa", "volcanion",
     // Gen 7
@@ -45,9 +45,9 @@ const GENERATIONS = {
     // Gen 3
     "jirachi", "deoxys-normal",
     // Gen 4
-    "phione", "manaphy", "darkrai", "shaymin", "arceus",
+    "phione", "manaphy", "darkrai", "shaymin-land", "arceus",
     // Gen 5
-    "victini", "keldeo", "meloetta", "genesect",
+    "victini", "keldeo-ordinary", "meloetta-aria", "genesect",
     // Gen 6
     "diancie", "hoopa", "volcanion",
     // Gen 7

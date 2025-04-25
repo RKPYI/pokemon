@@ -30,3 +30,9 @@
 
 ## 1.2.1
 - Fix bugs where mythical upgrades have no sound effect when purchased.
+
+## 1.2.2
+- Mythical own sfx
+- Changing legendary sfx
+- Adding shiny sfx for future plan
+- Fixing some legendary & mythical pokemon rarity

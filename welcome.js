@@ -147,7 +147,9 @@ class WelcomeScreen {
         // Play appropriate sounds based on results
         results.forEach(result => {
           if (result.caught) {
-            if (LEGENDARY_POKEMON.has(result.name.toLowerCase())) {
+            if (MYTHICAL_POKEMON.has(result.name.toLowerCase())) {
+              this.audioManager.playSfx('mythical');
+            } else if (LEGENDARY_POKEMON.has(result.name.toLowerCase())) {
               this.audioManager.playSfx('legendary');
             } else {
               this.audioManager.playSfx('catch');
@@ -411,6 +413,7 @@ class WelcomeScreen {
       this.sfx = {
         catch: new Audio('./assets/catch.mp3'),
         legendary: new Audio('./assets/legendary.mp3'),
+        mythical: new Audio('./assets/mythical.mp3'),
         miss: new Audio('./assets/miss.mp3'),
         upgrade: new Audio('./assets/SFX_LEVEL_UP.wav'),
         genComplete: new Audio('./assets/genComplete.mp3')
