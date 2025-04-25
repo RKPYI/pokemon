@@ -45,7 +45,12 @@
         <span class="stat-label">Auto-Release:</span>
         <span id="auto-release">Inactive</span>
       </div>
+      <div class="stat-item">
+        <span class="stat-label">Rebirth:</span>
+        <span id="rebirth-level">0</span>
+      </div>
     </div>
+    
 
     <div class="catch-rate-panel">
       <h3>Catch Rate Bonuses</h3>
@@ -79,7 +84,7 @@
       <h3>Basic Upgrades</h3>
       <div class="tooltip">
         <button id="upgrade-speed">Upgrade Catch Speed (Cost: 10)</button>
-        <span class="tooltip-text">Decreases time between catches by 0.5 seconds. Min: 1 second.</span>
+        <span class="tooltip-text">Decreases time between catches. Min: 1 second.</span>
       </div>
       
       <div class="tooltip">
@@ -100,6 +105,14 @@
       <div class="tooltip">
         <button id="upgrade-mythicalbooster">Mythical Booster (Cost: <span id="mythicalBoosterCost">200</span>)</button>
         <span class="tooltip-text">Increase chance to catch Mythical Pokémon by 1%</span>
+      </div>
+    </div>
+
+    <div class="rebirth-upgrades">
+      <h3>Rebirth Upgrades</h3>
+      <div class="tooltip">
+        <button id="rebirth-button">Rebirth (Mastery Gen <span id="rebirthRequirement">1</span> Required)</button>
+        <span class="tooltip-text">Reset progress for more Generations, +10% Catching Speeds.</span>
       </div>
     </div>
     
@@ -169,6 +182,11 @@
           <span id="gen5-mastery">Not Mastered</span>
           <span class="tooltip-text">Complete Gen 5 Pokédex to earn 2x coins for all Gen 5 Pokémon.</span>
         </div>
+        <div class="stat-item tooltip">
+          <span class="stat-label">Gen 6:</span>
+          <span id="gen6-mastery">Not Mastered</span>
+          <span class="tooltip-text">Complete Gen 6 Pokédex to earn 2x coins for all Gen 6 Pokémon.</span>
+        </div>
       </div>
     </div>
 
@@ -192,7 +210,7 @@
 
     <!-- Main Game Area -->
     <div class="main-area">
-      <h1>Idle Pokémon Catcher <span class="gameVersion">1.3.2</span></h1>
+      <h1>Idle Pokémon Catcher <span class="gameVersion">1.4.0</span></h1>
       
       <div class="pokemon-card" id="pokemon-container">
         <p>Waiting to catch Pokémon...</p>
@@ -224,6 +242,7 @@
    <audio src="./assets/audio/legendary.mp3"></audio>
    <audio src="./assets/audio/miss.mp3"></audio>
    <audio src="./assets/audio/mythical.mp3"></audio>
+   <audio src="./assets/audio/rebirth.mp3"></audio>
    <audio src="./assets/audio/SFX_LEVEL_UP.wav"></audio>
    <audio src="./assets/audio/shiny.mp3"></audio>
    <audio src="./assets/audio/theme.wav"></audio>

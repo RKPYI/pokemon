@@ -56,3 +56,9 @@
 
 ## 1.3.2
 - Added Exclusive Shiny Card when catching shiny pokemon
+
+## 1.4.0
+- New Rebirth Mechanic!
+- Now you need to rebirth to unlock more pokemon gens
+- Rebirth gives +10% catch speed and higher chance of catching shiny.
+- Adding Gen 6!

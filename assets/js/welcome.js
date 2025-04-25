@@ -196,6 +196,15 @@ class WelcomeScreen {
           return result;
         };
       });
+
+      const rebirthButton = document.getElementById('rebirth-button');
+      const originalRebirthClickHandler = rebirthButton.onclick;
+
+      rebirthButton.onclick = (e) => {
+        const result = originalRebirthClickHandler ? originalRebirthClickHandler(e) : undefined;
+        game.audioManager.playSfx('rebirth');
+        return result;
+      };
     }
     
     addWelcomeStyles() {
@@ -418,6 +427,7 @@ class WelcomeScreen {
         mythical: new Audio('./assets/audio/mythical.mp3'),
         miss: new Audio('./assets/audio/miss.mp3'),
         upgrade: new Audio('./assets/audio/SFX_LEVEL_UP.wav'),
+        rebirth: new Audio('./assets/audio/rebirth.mp3'),
         shiny: new Audio('./assets/audio/shiny.mp3'),
         genComplete: new Audio('./assets/audio/genComplete.mp3')
       };

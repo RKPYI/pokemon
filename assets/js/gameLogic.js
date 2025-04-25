@@ -226,6 +226,7 @@ class PokemonGame {
     if (id <= GENERATIONS[3].end) return 3;
     if (id <= GENERATIONS[4].end) return 4;
     if (id <= GENERATIONS[5].end) return 5;
+    if (id <= GENERATIONS[6].end) return 6;
     return 1; // Default to Gen 1 if ID is out of range
   }
   
@@ -249,7 +250,6 @@ class PokemonGame {
   }
   
   // Game logic and mechanics
-  
   checkGenerationCompletion() {
     // For each generation the player has access to
     for (let gen = 1; gen <= this.currentGen; gen++) {
@@ -263,7 +263,7 @@ class PokemonGame {
       });
       
       // Check if we completed this generation and haven't unlocked next gen yet
-      if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < 5) {
+      if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < (this.rebirthLevel+1) && gen < 6) {
         this.currentGen++;
         this.catchAmount = Math.min(this.currentGen, 3);
         this.saveGame();
@@ -647,10 +647,17 @@ class PokemonGame {
       return results;
   }
   
+  rebirthEligibility() {
+    const requiredGenForRebirth = this.rebirthLevel + 1;
+    if (!this.genMastery[requiredGenForRebirth]) {
+      return false;
+    } else {
+      return true;
+    }
+  }
   // Rebirth system - reset game but keep some permanent bonuses
   rebirth() {
-    // Only allow rebirth if player has mastered at least one generation
-    if (!this.genMastery || Object.keys(this.genMastery).length === 0) {
+    if (!this.rebirthEligibility()) {
       return false;
     }
     

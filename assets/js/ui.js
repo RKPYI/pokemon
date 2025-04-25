@@ -47,24 +47,32 @@ class GameUI {
           document.getElementById('mythicalBoosterCost').textContent = this.game.getMythicalBoosterCost();
         }
       });
+
+      // Set up event listeners for Rebirth upgrades
+      document.getElementById('rebirth-button').addEventListener('click', () => {
+        if (this.game.rebirth()) {
+          this.updateStats();
+          this.restartGameLoop();
+        }
+      });
       
       // Set up event listeners for Pokeball upgrades
       document.getElementById('upgrade-greatball').addEventListener('click', () => {
-      if (this.game.upgradePokeBall('greatBall')) {
-          this.updateStats();
-      }
+        if (this.game.upgradePokeBall('greatBall')) {
+            this.updateStats();
+        }
       });
       
       document.getElementById('upgrade-ultraball').addEventListener('click', () => {
-      if (this.game.upgradePokeBall('ultraBall')) {
-          this.updateStats();
-      }
+        if (this.game.upgradePokeBall('ultraBall')) {
+            this.updateStats();
+        }
       });
       
       document.getElementById('upgrade-masterball').addEventListener('click', () => {
-      if (this.game.upgradePokeBall('masterBall')) {
-          this.updateStats();
-      }
+        if (this.game.upgradePokeBall('masterBall')) {
+            this.updateStats();
+        }
       });
       
       document.getElementById('sort-by').addEventListener('change', (e) => {
@@ -91,13 +99,14 @@ class GameUI {
       // Update player stats in UI
       document.getElementById('coins').textContent = this.game.coins;
       document.getElementById('total-caught').textContent = this.game.totalCaught;
-      document.getElementById('catch-speed').textContent = (this.game.catchInterval / 1000).toFixed(1);
+      document.getElementById('catch-speed').textContent = (this.getEffectiveCatchInterval() / 1000).toFixed(2);
       document.getElementById('catch-amount').textContent = this.game.catchAmount;
       document.getElementById('current-gen').textContent = this.game.currentGen;
       document.getElementById('quality-level').textContent = this.game.qualityLevel || 0;
       document.getElementById('coin-multiplier').textContent = `${this.game.coinMultiplier || 1}x`;
       document.getElementById('auto-release').textContent = this.game.autoReleaseEnabled ? 'Active' : 'Inactive';
       document.getElementById('mythicalBoosterCost').textContent = this.game.getMythicalBoosterCost();
+      document.getElementById('rebirth-level').textContent = this.game.rebirthLevel;
 
       document.getElementById('total-shiny-caught').textContent = this.game.totalShinyCaught || 0;
       document.getElementById('unique-shiny-count').textContent = this.game.uniqueShinyCount || 0;
@@ -106,6 +115,9 @@ class GameUI {
       if (document.getElementById('shiny-chance')) {
         document.getElementById('shiny-chance').textContent = `1/${Math.round(1/shinyChance)}`;
       }
+
+      // Update rebirth requirement
+      document.getElementById('rebirthRequirement').textContent = this.game.rebirthLevel + 1;
       
       // Update Pokédex progress
       const stats = this.game.getPokedexStats();
@@ -149,6 +161,9 @@ class GameUI {
 
       const mythicalBoosterBtn = document.getElementById('upgrade-mythicalbooster');
       mythicalBoosterBtn.disabled = this.game.coins < this.game.getMythicalBoosterCost();
+
+      const rebirthButton = document.getElementById('rebirth-button');
+      rebirthButton.disabled = !this.game.rebirthEligibility();
   }
   
   updatePokeballStatus() {
@@ -200,7 +215,7 @@ class GameUI {
   
   updateGenMasteryStatus() {
       // Update the generation mastery status for each generation
-      for (let gen = 1; gen <= 5; gen++) {
+      for (let gen = 1; gen <= 6; gen++) {
       const genMasteryElement = document.getElementById(`gen${gen}-mastery`);
       if (this.game.genMastery && this.game.genMastery[gen]) {
           genMasteryElement.textContent = 'Mastered (2x coins)';
@@ -500,6 +515,16 @@ class GameUI {
       }
     }, 10000);
   }
+
+  getEffectiveCatchInterval() {
+    let effectiveCatchInterval = this.game.catchInterval * (1 - (this.game.rebirthLevel * 0.1));
+  
+    // Ensure the interval doesn't go below a minimum value (e.g., 100ms)
+    const minInterval = 100;
+    effectiveCatchInterval = Math.max(effectiveCatchInterval, minInterval);
+
+    return effectiveCatchInterval;
+  }
   
   restartGameLoop() {
     if (this.game.intervalId) {
@@ -509,6 +534,7 @@ class GameUI {
   }
   
   startGameLoop() {
+
     this.game.intervalId = setInterval(async () => {
       const results = await this.game.catchPokemon();
       this.displayCatchResults(results);
@@ -525,7 +551,7 @@ class GameUI {
           this.showGenMasteryComplete(gen);
           }
       }
-    }, this.game.catchInterval);
+    }, this.getEffectiveCatchInterval());
   }
 
   setupCollapsibleSections() {
@@ -535,6 +561,7 @@ class GameUI {
       // Sections to make collapsible
       const sections = [
           { title: 'Basic Upgrades', id: 'upgrades' },
+          { title: 'Rebirth Upgrades', id: 'rebirth-upgrades' },
           { title: 'Poké Ball Upgrades', id: 'poke-balls' },
           { title: 'Generation Mastery', id: 'gen-mastery' }
       ];
