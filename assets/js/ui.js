@@ -256,7 +256,6 @@ class GameUI {
   
   fetchAndRenderPokemon(pokemon, container, isShinyMode = false) {
     // Check if we have cached data for this Pokémon
-    console.log('fetchandrenderpokemon_isshiny?: ' + isShinyMode);
     if (this.pokemonCache.has(pokemon.name.toLowerCase())) {
       const cachedData = this.pokemonCache.get(pokemon.name.toLowerCase());
       this.renderPokemonEntry(pokemon, cachedData, container, isShinyMode);

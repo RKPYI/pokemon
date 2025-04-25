@@ -1,0 +1,65 @@
+/* Catch Rate Panel */
+.catch-rate-panel {
+    background-color: #2c3e60;
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    box-shadow: var(--shadow-sm);
+}
+  
+.catch-rate-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+  
+.catch-rate-bar-container {
+    position: relative;
+    height: 25px;
+    background-color: var(--gray-light);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+  
+.catch-rate-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff7b00 0%, #ffae00 50%, #68d391 100%);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+  
+.catch-rate-value {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-weight: bold;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+}
+  
+.catch-rate-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-sm);
+}
+  
+.catch-rate-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--primary);
+    border-radius: var(--radius-sm);
+}
+  
+.catch-rate-label {
+    font-weight: bold;
+}
+  
+.mythical-label {
+    background-color: var(--mythical-bg);
+}

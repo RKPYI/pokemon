@@ -147,7 +147,6 @@ class WelcomeScreen {
         // Play appropriate sounds based on results
         results.forEach(result => {
           if (result.caught) {
-            console.log('result: '+ result.isShiny)
             if (result.isShiny) {
               this.audioManager.playSfx('shiny')
             } else if (MYTHICAL_POKEMON.has(result.name.toLowerCase())) {
@@ -402,8 +401,8 @@ class WelcomeScreen {
     initialize() {
       // Load background music
       this.bgm = {
-        main: new Audio('./assets/theme.wav'),
-        battle: new Audio('./assets/theme.wav')
+        main: new Audio('./assets/audio/theme.wav'),
+        battle: new Audio('./assets/audio/theme.wav')
       };
       
       // Set bgm to loop
@@ -414,13 +413,13 @@ class WelcomeScreen {
       
       // Load sound effects
       this.sfx = {
-        catch: new Audio('./assets/catch.mp3'),
-        legendary: new Audio('./assets/legendary.mp3'),
-        mythical: new Audio('./assets/mythical.mp3'),
-        miss: new Audio('./assets/miss.mp3'),
-        upgrade: new Audio('./assets/SFX_LEVEL_UP.wav'),
-        shiny: new Audio('./assets/shiny.mp3'),
-        genComplete: new Audio('./assets/genComplete.mp3')
+        catch: new Audio('./assets/audio/catch.mp3'),
+        legendary: new Audio('./assets/audio/legendary.mp3'),
+        mythical: new Audio('./assets/audio/mythical.mp3'),
+        miss: new Audio('./assets/audio/miss.mp3'),
+        upgrade: new Audio('./assets/audio/SFX_LEVEL_UP.wav'),
+        shiny: new Audio('./assets/audio/shiny.mp3'),
+        genComplete: new Audio('./assets/audio/genComplete.mp3')
       };
       
       // Set sfx volumes

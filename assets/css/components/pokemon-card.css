@@ -1,0 +1,49 @@
+/* Pokémon Card */
+.pokemon-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin: var(--space-lg) auto;
+    max-width: 400px;
+    box-shadow: var(--shadow-md);
+}
+  
+.pokemon-card img {
+    width: 120px;
+    height: 120px;
+}
+  
+.pokemon-card p:only-child {
+    animation: catching 1s infinite;
+}
+  
+.pokemon-multi-catch {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+  
+.catch-item {
+    flex: 1;
+    min-width: 120px;
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    background: #f9f9f9;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+}
+  
+.catch-item:hover {
+    transform: translateY(-3px);
+}
+  
+.catch-item.auto-released {
+    background: var(--success-light);
+    border: 1px dashed var(--success-border);
+}
+  
+.catch-item h4 {
+    margin: var(--space-xs) 0;
+}
+  

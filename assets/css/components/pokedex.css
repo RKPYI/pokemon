@@ -1,0 +1,129 @@
+/* Pokedex */
+.pokedex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: center;
+    margin-top: var(--space-lg);
+}
+  
+.pokedex-progress {
+    font-size: 0.8em;
+    color: var(--text-light);
+    margin-left: var(--space-sm);
+}
+  
+.poke-entry {
+    background: var(--white);
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    width: 130px;
+    position: relative;
+    transition: transform 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+  
+.poke-entry:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+  
+.poke-entry img {
+    width: 96px;
+    height: 96px;
+}
+  
+.poke-entry p {
+    margin: var(--space-xs) 0;
+    font-weight: bold;
+}
+  
+/* Shiny Pokemon Entry */
+.shiny-entry {
+    background: linear-gradient(135deg, #faf49e, #f8f9da, #fceda7);
+    border: 1px solid var(--gray-light);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+  
+.shiny-stats h3 {
+    color: #f1c40f;
+}
+
+/* Dex Controls */
+.dex-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+}
+  
+#dex-mode-indicator {
+    color: var(--dark);
+    margin: 0;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    display: inline-block;
+}
+  
+.dex-mode-toggle {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 8px 15px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    margin: var(--space-sm) 0;
+    transition: background 0.3s, transform 0.1s;
+}
+  
+.dex-mode-toggle:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+  
+.dex-mode-toggle:active {
+    transform: translateY(1px);
+}
+
+/* Generation Complete Banner */
+.gen-complete {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--white);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin: var(--space-lg) auto;
+    max-width: 500px;
+    animation: pulse 2s infinite;
+}
+  
+.gen-complete h3 {
+    margin: var(--space-xs) 0;
+}
+  
+.gen-complete p {
+    margin: var(--space-xs) 0;
+}
+  
+/* Sorting and Controls */
+.sort-options {
+    margin: var(--space-md) 0;
+    background: #eff3f6;
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+  
+.sort-options select {
+    background: var(--white);
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--gray-light);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+  
+.sort-options select:focus {
+    border-color: var(--primary);
+    outline: none;
+}

@@ -1,0 +1,47 @@
+:root {
+    /* Colors */
+    --primary: #3498db;
+    --primary-dark: #2980b9;
+    --secondary: #9b59b6;
+    --secondary-dark: #8e44ad;
+    --danger: #e74c3c;
+    --danger-dark: #c0392b;
+    --success: #2ecc71;
+    --success-light: #e8f5e9;
+    --success-border: #81c784;
+    --dark: #2c3e50;
+    --dark-light: #2f4153;
+    --text-light: #7f8c8d;
+    --bg-light: #f4f4f4;
+    --white: #fff;
+    --gray: #95a5a6;
+    --gray-light: #ddd;
+
+    /* Rarity Colors */
+    --common-bg: #ccffcc;
+    --common-text: #2e7d32;
+    --rare-bg: #fff9c4;
+    --rare-text: #f9a825;
+    --legendary-bg: #ffcdd2;
+    --legendary-text: #c62828;
+    --mythical-bg: #e1bee7;
+    --mythical-text: #6a1b9a;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-full: 50%;
+
+    /* Spacing */
+    --space-xs: 5px;
+    --space-sm: 10px;
+    --space-md: 15px;
+    --space-lg: 20px;
+    --space-xl: 30px;
+}

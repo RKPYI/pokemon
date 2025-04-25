@@ -1,0 +1,102 @@
+/* Stats Panel */
+.stats-panel {
+    width: 300px;
+    background: var(--dark);
+    color: var(--white);
+    padding: var(--space-lg);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.stats-panel h2, 
+.stats-panel h3 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--primary);
+    padding-bottom: var(--space-sm);
+    color: var(--primary);
+}
+
+.stat-item {
+    padding: 0 var(--space-sm);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(to left, var(--dark-light), var(--dark), var(--dark-light));
+    margin: 12px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Player Stats Grid */
+.player-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+    margin-bottom: var(--space-md);
+}
+
+/* Reusable Section Styles */
+.upgrades, 
+.poke-balls, 
+.gen-mastery,
+.shiny-stats {
+    margin-top: var(--space-xl);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px dashed var(--primary);
+}
+
+.upgrades button, 
+.poke-balls button {
+    margin-top: var(--space-sm);
+    width: 100%;
+}
+
+/* Pokeball specific buttons */
+.poke-balls button#upgrade-greatball {
+    background: var(--primary);
+}
+
+.poke-balls button#upgrade-ultraball {
+    background: var(--secondary);
+}
+
+.poke-balls button#upgrade-masterball {
+    background: var(--danger);
+}
+
+.poke-balls button#upgrade-greatball:hover {
+    background: var(--primary-dark);
+}
+
+.poke-balls button#upgrade-ultraball:hover {
+    background: var(--secondary-dark);
+}
+
+.poke-balls button#upgrade-masterball:hover {
+    background: var(--danger-dark);
+}
+
+/* Improved Pokeball Section */
+.ball-upgrades {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+  
+.ball-upgrade-item {
+    border-left: 3px solid var(--primary);
+    padding-left: 8px;
+}
+
+/* Status Indicators */
+.active-bonus {
+    color: var(--success);
+    font-weight: bold;
+    background: rgba(46, 204, 113, 0.1);
+    border-radius: var(--radius-sm);
+    padding: 2px var(--space-xs);
+}
+  
+.auto-released-text {
+    color: #27ae60;
+    font-style: italic;
+}

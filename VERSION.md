@@ -49,3 +49,7 @@
 - Shiny Pokedex!
 - Shiny Stat Panel
 - Shiny sfx
+
+## 1.3.1
+- Organizing the project files
+- Factorizing css styles to make development easier

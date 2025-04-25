@@ -1,0 +1,177 @@
+/* Mobile Responsiveness - Consolidated */
+@media (max-width: 768px) {
+    /* Layout adjustments */
+    .game-container {
+        flex-direction: column;
+    }
+
+    /* Stats panel adjustments */
+    .stats-panel {
+        width: 100%;
+        height: auto;
+        max-height: 250px;
+        overflow-y: auto;
+        top: 0;
+        z-index: 10;
+        padding: var(--space-sm);
+        border-bottom: 3px solid var(--primary);
+    }
+
+    .stats-panel h2 {
+        font-size: 1.2rem;
+        margin: var(--space-xs) 0;
+        padding-bottom: var(--space-xs);
+    }
+
+    .stats-panel h3 {
+        font-size: 1rem;
+        margin: var(--space-sm) 0 var(--space-xs);
+    }
+
+    .stat-item {
+        margin: 6px 0;
+        font-size: 0.9rem;
+    }
+
+    .upgrades,
+    .poke-balls,
+    .gen-mastery {
+        margin-top: var(--space-md);
+        padding-bottom: var(--space-sm);
+    }
+
+    .upgrades button,
+    .poke-balls button {
+        padding: var(--space-sm);
+        margin-top: 8px;
+        font-size: 0.9rem;
+    }
+
+    /* Main area adjustments */
+    .main-area {
+        padding: var(--space-sm);
+    }
+
+    .main-area h1 {
+        font-size: 1.5rem;
+        margin: var(--space-sm) 0;
+    }
+
+    /* Pokemon card and catch items */
+    .pokemon-card {
+        padding: var(--space-md);
+        margin: var(--space-md) auto;
+    }
+
+    .pokemon-multi-catch {
+        gap: var(--space-xs);
+    }
+
+    .catch-item {
+        min-width: 100px;
+        padding: 8px;
+    }
+
+    /* Pokedex items */
+    .pokedex {
+        gap: 8px;
+    }
+
+    .poke-entry {
+        width: 110px;
+        padding: 8px;
+    }
+
+    .poke-entry img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .poke-entry p {
+        font-size: 0.85rem;
+        margin: 3px 0;
+    }
+
+    .type-badge {
+        padding: 1px 4px;
+        font-size: 9px;
+    }
+
+    /* Collapsible sections */
+    .collapsible-header {
+        cursor: pointer;
+        position: relative;
+        padding-right: 20px;
+    }
+
+    .collapsible-header:after {
+        content: "+";
+        position: absolute;
+        right: 5px;
+        font-weight: bold;
+    }
+
+    .collapsible-header.active:after {
+        content: "-";
+    }
+
+    .collapsible-content {
+        display: none;
+    }
+
+    .collapsible-content.active {
+        display: block;
+    }
+
+    /* Sort options positioning */
+    .sort-options {
+        position: sticky;
+        top: 250px;
+        background: var(--bg-light);
+        padding: 8px 0;
+        z-index: 5;
+    }
+
+    /* Generation complete banner */
+    .gen-complete {
+        padding: var(--space-sm);
+        margin: var(--space-md) auto;
+        max-width: 90%;
+    }
+
+    /* Dex controls */
+    .dex-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dex-mode-toggle {
+        margin: var(--space-sm) 0;
+    }
+
+    /* Catch rate details */
+    .catch-rate-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .poke-entry {
+        width: 85px;
+    }
+
+    .poke-entry img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .pokemon-card img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .stats-panel {
+        max-height: 200px;
+    }
+}

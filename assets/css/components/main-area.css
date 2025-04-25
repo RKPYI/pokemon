@@ -1,0 +1,27 @@
+/* Main Game Area */
+.main-area {
+    position: relative;
+    flex: 1;
+    padding: var(--space-lg);
+    overflow-y: auto;
+    text-align: center;
+}
+  
+.main-area .gameVersion {
+    position: absolute;
+    left: 25px;
+    font-size: 10px;
+}
+  
+.main-area h1 {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--white);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+}
+  
+.main-area h2 {
+    margin: var(--space-md) 0 var(--space-sm);
+}

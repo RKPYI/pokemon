@@ -1,0 +1,15 @@
+@import url('./variables.css');
+@import url('./base.css');
+@import url('./utilities.css');
+
+
+@import url('./components/badges.css');
+@import url('./components/catch-rate-panel.css');
+@import url('./components/main-area.css');
+@import url('./components/pokedex.css');
+@import url('./components/pokemon-card.css');
+@import url('./components/stats-panel.css');
+
+@import url('./responsive.css');
+
+@import url('./style.css');
