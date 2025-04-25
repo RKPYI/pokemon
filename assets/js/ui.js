@@ -330,83 +330,153 @@ class GameUI {
   }
   
   displayCatchResults(results) {
-      const pokemonContainer = document.getElementById('pokemon-container');
+    const pokemonContainer = document.getElementById('pokemon-container');
+    
+    if (results.length === 1) {
+      // Single catch display
+      const result = results[0];
+      if (!result.caught) {
+        pokemonContainer.innerHTML = `
+          <p>You encountered a <strong>${result.error ? 'mysterious' : result.rarity}</strong> Pokémon... but it escaped!</p>
+        `;
+        // Remove shiny class if it exists
+        pokemonContainer.classList.remove('shiny-catch');
+        return;
+      }
       
-      if (results.length === 1) {
-          // Single catch display
-          const result = results[0];
-          if (!result.caught) {
-          pokemonContainer.innerHTML = `
-              <p>You encountered a <strong>${result.error ? 'mysterious' : result.rarity}</strong> Pokémon... but it escaped!</p>
-          `;
-          return;
+      // Add or remove shiny class based on whether it's shiny
+      if (result.isShiny) {
+        pokemonContainer.classList.add('shiny-catch');
+      } else {
+        pokemonContainer.classList.remove('shiny-catch');
+      }
+
+      const shinyText = result.isShiny ? '<span class="shiny-label">✨ SHINY ✨</span>' : '';
+      
+      pokemonContainer.innerHTML = `
+        <h3>You caught: ${result.name} ${shinyText}</h3>
+        <img src="${result.img}" alt="${result.name}"/>
+        <div class="rarity ${result.rarity}">${result.rarity}</div>
+        <div class="types">
+          ${result.types.map(type => 
+            `<span class="type-badge" style="background-color: ${TYPE_COLORS[type] || '#999'}">${type}</span>`
+          ).join('')}
+        </div>
+        ${result.autoReleased ? 
+          `<p class="auto-released-text">Auto-released for ${GAME_CONFIG.autoReleaseValue[result.rarity.toLowerCase()]} extra coins!</p>` : 
+          (result.isDuplicate ? 
+            `<p>This is a duplicate${result.isShiny ? ' shiny' : ''}!</p>` : 
+            `<p>New ${result.isShiny ? 'shiny ' : ''}Pokémon added to Pokédex!</p>`)}
+        <p>You earned ${result.coinsEarned} coins!</p>
+      `;
+      
+      // Update the specific Pokémon in the Pokédex if not auto-released
+      if (result.caught && !result.autoReleased) {
+        // If it's a shiny, update the shiny collection
+        if (result.isShiny) {
+          // Safely check if shinyPokemonCollection exists before using it
+          if (this.game.shinyPokemonCollection && this.game.shinyPokemonCollection.has(result.name)) {
+            this.updatePokemonEntry({
+              name: result.name,
+              count: this.game.shinyPokemonCollection.get(result.name).count,
+              gen: result.generation,
+              types: result.types,
+              rarity: result.rarity
+            }, true);
+          } else {
+            // This might be the first shiny of this Pokémon
+            this.updatePokemonEntry({
+              name: result.name,
+              count: 1,
+              gen: result.generation,
+              types: result.types,
+              rarity: result.rarity
+            }, true);
           }
-          
-          pokemonContainer.innerHTML = `
-          <h3>You caught: ${result.name}</h3>
-          <img src="${result.img}" alt="${result.name}" />
-          <div class="rarity ${result.rarity}">${result.rarity}</div>
-          <div class="types">
-              ${result.types.map(type => 
-              `<span class="type-badge" style="background-color: ${TYPE_COLORS[type] || '#999'}">${type}</span>`
-              ).join('')}
-          </div>
-          ${result.autoReleased ? 
-              `<p class="auto-released-text">Auto-released for ${GAME_CONFIG.autoReleaseValue[result.rarity.toLowerCase()]} extra coins!</p>` : 
-              (result.isDuplicate ? '<p>This is a duplicate!</p>' : '<p>New Pokémon added to Pokédex!</p>')}
-          <p>You earned ${result.coinsEarned} coins!</p>
-          `;
-          
-          // Update the specific Pokémon in the Pokédex if not auto-released
-          if (result.caught && !result.autoReleased) {
-          this.updatePokemonEntry({
+        } else {
+          // Update normal collection
+          if (this.game.pokemonCollection && this.game.pokemonCollection.has(result.name)) {
+            this.updatePokemonEntry({
               name: result.name,
               count: this.game.pokemonCollection.get(result.name).count,
               gen: result.generation,
               types: result.types,
               rarity: result.rarity
-          });
+            });
           }
-      } else {
-          // Multi-catch display
-          let html = `<div class="pokemon-multi-catch">`;
+        }
+      }
+    } else {
+      // Multi-catch display
+      let html = `<div class="pokemon-multi-catch">`;
+      
+      results.forEach(result => {
+        if (!result.caught) {
+          html += `
+            <div class="catch-item">
+              <p>A ${result.error ? 'mysterious' : result.rarity} Pokémon escaped!</p>
+            </div>
+          `;
+        } else {
+          // Add shiny class and indicator for multi-catch display
+          const shinyClass = result.isShiny ? 'shiny-pokemon' : '';
+          const shinyText = result.isShiny ? '<span class="shiny-label-small">✨</span>' : '';
           
-          results.forEach(result => {
-          if (!result.caught) {
-              html += `
-              <div class="catch-item">
-                  <p>A ${result.error ? 'mysterious' : result.rarity} Pokémon escaped!</p>
-              </div>
-              `;
-          } else {
-              html += `
-              <div class="catch-item ${result.autoReleased ? 'auto-released' : ''}">
-                  <h4>${result.name}</h4>
-                  <img src="${result.img}" alt="${result.name}" style="width: 60px; height: 60px;">
-                  <div class="rarity ${result.rarity}">${result.rarity}</div>
-                  ${result.autoReleased ? 
-                  `<small class="auto-released-text">Auto-released (+${GAME_CONFIG.autoReleaseValue[result.rarity.toLowerCase()]} coins)</small>` : 
-                  (result.isDuplicate ? '<small>Duplicate</small>' : '<small>New!</small>')}
-                  <small>+${result.coinsEarned} coins</small>
-              </div>
-              `;
-              
-              // Update each caught Pokémon in the Pokédex if not auto-released
-              if (!result.autoReleased) {
-              this.updatePokemonEntry({
+          html += `
+            <div class="catch-item ${result.autoReleased ? 'auto-released' : ''} ${result.isShiny ? 'shiny-catch' : ''}">
+              <h4>${result.name} ${shinyText}</h4>
+              <img src="${result.img}" alt="${result.name}" class="${shinyClass}" style="width: 60px; height: 60px;">
+              <div class="rarity ${result.rarity}">${result.rarity}</div>
+              ${result.autoReleased ? 
+                `<small class="auto-released-text">Auto-released (+${GAME_CONFIG.autoReleaseValue[result.rarity.toLowerCase()]} coins)</small>` : 
+                (result.isDuplicate ? 
+                  `<small>Duplicate${result.isShiny ? ' Shiny' : ''}</small>` : 
+                  `<small>${result.isShiny ? 'New Shiny!' : 'New!'}</small>`)}
+              <small>+${result.coinsEarned} coins</small>
+            </div>
+          `;
+          
+          // Update each caught Pokémon in the Pokédex if not auto-released
+          if (!result.autoReleased) {
+            if (result.isShiny) {
+              // Use the correct variable name shinyPokemonCollection
+              if (this.game.shinyPokemonCollection && this.game.shinyPokemonCollection.has(result.name)) {
+                this.updatePokemonEntry({
+                  name: result.name,
+                  count: this.game.shinyPokemonCollection.get(result.name).count,
+                  gen: result.generation,
+                  types: result.types,
+                  rarity: result.rarity
+                }, true);
+              } else {
+                // This might be the first shiny of this type
+                this.updatePokemonEntry({
+                  name: result.name,
+                  count: 1,
+                  gen: result.generation,
+                  types: result.types,
+                  rarity: result.rarity
+                }, true);
+              }
+            } else {
+              // Update normal collection
+              if (this.game.pokemonCollection && this.game.pokemonCollection.has(result.name)) {
+                this.updatePokemonEntry({
                   name: result.name,
                   count: this.game.pokemonCollection.get(result.name).count,
                   gen: result.generation,
                   types: result.types,
                   rarity: result.rarity
-              });
+                });
               }
+            }
           }
-          });
-          
-          html += `</div>`;
-          pokemonContainer.innerHTML = html;
-      }
+        }
+      });
+      
+      html += `</div>`;
+      pokemonContainer.innerHTML = html;
+    }
   }
   
   showGenerationComplete(generation) {

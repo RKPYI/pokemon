@@ -53,3 +53,6 @@
 ## 1.3.1
 - Organizing the project files
 - Factorizing css styles to make development easier
+
+## 1.3.2
+- Added Exclusive Shiny Card when catching shiny pokemon

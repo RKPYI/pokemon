@@ -49,6 +49,12 @@
     color: #f1c40f;
 }
 
+.shiny-catch {
+    background: linear-gradient(135deg, #faf49e, #f8f9da, #fceda7) !important;
+    border: 1px solid var(--gray-light) !important;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3) !important;
+}
+
 /* Dex Controls */
 .dex-controls {
     display: flex;
