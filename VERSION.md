@@ -39,3 +39,7 @@
 
 ## 1.2.3
 - Changing catch sound to be lower
+
+## 1.2.4
+- Clean up codes
+- Added ShinyConfigs
