@@ -550,10 +550,10 @@ class PokemonGame {
         
         // Apply catch rate bonus to miss chance
         const missChance = Math.max(0, this.getMissChance(rarity) - this.getCatchRateBonus());
-        
+
         // Miss logic
         if (rarity === "mythical") {
-          const mythicalMissChance = Math.max(0, missChance - this.getMythicalBoosterBonus());
+          const mythicalMissChance = Math.max(0, this.getMissChance(rarity) - this.getMythicalBoosterBonus());
 
           if (Math.random() < mythicalMissChance) {
             results.push({
@@ -669,7 +669,7 @@ class PokemonGame {
     this.catchInterval = GAME_CONFIG.initialCatchInterval;
     this.pokemonCollection = new Map();
     this.uniquePokemonCount = 0;
-    this.totalCaught = 0;
+    // this.totalCaught = 0;
     this.currentGen = 1;
     this.catchAmount = 1;
     this.qualityLevel = 0;

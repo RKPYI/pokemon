@@ -65,3 +65,7 @@
 
 ## 1.4.1
 - Fix Rebirth Upgrades styling
+
+## 1.4.2
+- Fix mythical miss chance
+- Now total caught data won't be resetted when rebirthed
