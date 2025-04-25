@@ -62,3 +62,6 @@
 - Now you need to rebirth to unlock more pokemon gens
 - Rebirth gives +10% catch speed and higher chance of catching shiny.
 - Adding Gen 6!
+
+## 1.4.1
+- Fix Rebirth Upgrades styling
