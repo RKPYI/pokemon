@@ -36,3 +36,6 @@
 - Changing legendary sfx
 - Adding shiny sfx for future plan
 - Fixing some legendary & mythical pokemon rarity
+
+## 1.2.3
+- Changing catch sound to be lower
