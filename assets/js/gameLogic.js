@@ -648,6 +648,8 @@ class PokemonGame {
   }
   
   rebirthEligibility() {
+    if (!this.genMastery) this.genMastery = {};
+    
     const requiredGenForRebirth = this.rebirthLevel + 1;
     if (!this.genMastery[requiredGenForRebirth]) {
       return false;

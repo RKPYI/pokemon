@@ -53,6 +53,7 @@ class GameUI {
         if (this.game.rebirth()) {
           this.updateStats();
           this.restartGameLoop();
+          this.renderPokedex(this.currentSortBy);
         }
       });
       

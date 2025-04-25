@@ -69,3 +69,7 @@
 ## 1.4.2
 - Fix mythical miss chance
 - Now total caught data won't be resetted when rebirthed
+
+## 1.4.3
+- Fix when first playing, if genMastery in rebirthEligibility() is not declared yet the game is unplayable.
+- Fix pokedex not re-rendered when rebirthed
