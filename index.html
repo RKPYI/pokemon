@@ -171,27 +171,46 @@
         </div>
       </div>
     </div>
+
+    <div class="shiny-stats">
+      <h3>Shiny Stats</h3>
+      <div class="stat-item">
+        <span>Total Shinies:</span>
+        <span id="total-shiny-caught">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Unique Shinies:</span>
+        <span id="unique-shiny-count">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Shiny Chance:</span>
+        <span id="shiny-chance">1/8192</span>
+      </div>
+    </div>
+
   </div>
 
     <!-- Main Game Area -->
     <div class="main-area">
-      <h1>Idle Pokémon Catcher <span class="gameVersion">1.2.4</span></h1>
+      <h1>Idle Pokémon Catcher <span class="gameVersion">1.3.0</span></h1>
       
       <div class="pokemon-card" id="pokemon-container">
         <p>Waiting to catch Pokémon...</p>
       </div>
       
-      <h2>Your Pokédex <span id="pokedex-progress">(0/151)</span></h2>
-      
-      <!-- Sort options -->
-      <div class="sort-options">
-        <label for="sort-by">Sort by:</label>
-        <select id="sort-by">
-          <option value="rarity">Rarity</option>
-          <option value="amount">Amount</option>
-          <option value="gen">Generation</option>
-          <option value="type">Type</option>
-        </select>
+      <div class="dex-controls">
+        <h2>Your Pokédex <span id="pokedex-progress">(0/151)</span></h2>
+        <h2 id="dex-mode-indicator">Normal Pokédex</h2>
+        <button id="toggle-dex-mode" class="dex-mode-toggle">Show Shiny Pokédex</button>
+        <div class="sort-options">
+          <label for="sort-by">Sort by:</label>
+          <select id="sort-by">
+            <option value="rarity">Rarity</option>
+            <option value="type">Type</option>
+            <option value="amount">Amount</option>
+            <option value="gen">Generation</option>
+          </select>
+        </div>
       </div>
       
       <!-- Pokédex -->

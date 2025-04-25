@@ -727,3 +727,73 @@ font-style: italic;
     max-height: 200px;
     }
     }
+
+    /* Shiny badge and styling */
+.shiny-entry {
+  background: linear-gradient(135deg, #faf49e, #f8f9da, #fceda7);
+  border: 1px solid #ddd;
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+/* Dex Controls */
+.dex-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dex-mode-toggle {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px 0;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.dex-mode-toggle:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.dex-mode-toggle:active {
+  transform: translateY(1px);
+}
+
+#dex-mode-indicator {
+  color: #2c3e50;
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Shiny stats section */
+.shiny-stats {
+  margin-top: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #3498db;
+}
+
+.shiny-stats h3 {
+  color: #f1c40f;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dex-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .dex-mode-toggle {
+    margin: 10px 0;
+  }
+  
+  .sort-options {
+    margin-top: 10px;
+  }
+}

@@ -75,6 +75,16 @@ class GameUI {
       // Setup collapsible sections for mobile
       this.setupCollapsibleSections();
 
+      document.getElementById('toggle-dex-mode').addEventListener('click', () => {
+        this.game.toggleDexMode();
+        this.renderPokedex(this.currentSortBy);
+        this.updateStats();
+        
+        // Update the button text
+        const toggleButton = document.getElementById('toggle-dex-mode');
+        toggleButton.textContent = this.game.isDexShinyMode ? 
+          'Show Normal Pokédex' : 'Show Shiny Pokédex';
+      });
   }
 
   updateStats() {
@@ -88,6 +98,14 @@ class GameUI {
       document.getElementById('coin-multiplier').textContent = `${this.game.coinMultiplier || 1}x`;
       document.getElementById('auto-release').textContent = this.game.autoReleaseEnabled ? 'Active' : 'Inactive';
       document.getElementById('mythicalBoosterCost').textContent = this.game.getMythicalBoosterCost();
+
+      document.getElementById('total-shiny-caught').textContent = this.game.totalShinyCaught || 0;
+      document.getElementById('unique-shiny-count').textContent = this.game.uniqueShinyCount || 0;
+
+      const shinyChance = this.game.getShinyChance();
+      if (document.getElementById('shiny-chance')) {
+        document.getElementById('shiny-chance').textContent = `1/${Math.round(1/shinyChance)}`;
+      }
       
       // Update Pokédex progress
       const stats = this.game.getPokedexStats();
@@ -221,18 +239,27 @@ class GameUI {
     pokedexContainer.innerHTML = '';
     this.currentSortBy = sortBy;
     
+    // Get the correct collection based on current mode
+    const collection = this.game.getCurrentCollection();
+    
+    // Sort the collection
     const sortedPokemon = this.game.sortPokemon(sortBy);
     
+    // Update mode indicator in UI
+    document.getElementById('dex-mode-indicator').textContent = 
+      this.game.isDexShinyMode ? 'Shiny Pokédex' : 'Normal Pokédex';
+    
     sortedPokemon.forEach(pokemon => {
-      this.fetchAndRenderPokemon(pokemon, pokedexContainer);
+      this.fetchAndRenderPokemon(pokemon, pokedexContainer, this.game.isDexShinyMode);
     });
   }
   
-  fetchAndRenderPokemon(pokemon, container) {
+  fetchAndRenderPokemon(pokemon, container, isShinyMode = false) {
     // Check if we have cached data for this Pokémon
+    console.log('fetchandrenderpokemon_isshiny?: ' + isShinyMode);
     if (this.pokemonCache.has(pokemon.name.toLowerCase())) {
       const cachedData = this.pokemonCache.get(pokemon.name.toLowerCase());
-      this.renderPokemonEntry(pokemon, cachedData, container);
+      this.renderPokemonEntry(pokemon, cachedData, container, isShinyMode);
       return;
     }
     
@@ -241,18 +268,23 @@ class GameUI {
       .then(data => {
         // Cache the Pokémon data
         this.pokemonCache.set(pokemon.name.toLowerCase(), data);
-        this.renderPokemonEntry(pokemon, data, container);
+        this.renderPokemonEntry(pokemon, data, container, isShinyMode);
       })
       .catch(error => {
         console.error(`Error fetching Pokémon ${pokemon.name}:`, error);
       });
   }
   
-  renderPokemonEntry(pokemon, apiData, container) {
-    const img = apiData.sprites.front_default;
+  renderPokemonEntry(pokemon, apiData, container, isShinyMode = false) {
+    // Choose normal or shiny sprite based on mode
+    const img = isShinyMode ? 
+      (apiData.sprites.front_shiny || apiData.sprites.front_default) : 
+      apiData.sprites.front_default;
+    
     const entry = document.createElement('div');
     entry.classList.add('poke-entry');
-    entry.id = `poke-${pokemon.name.toLowerCase()}`;
+    if (isShinyMode) entry.classList.add('shiny-entry');
+    entry.id = `poke-${pokemon.name.toLowerCase()}${isShinyMode ? '-shiny' : ''}`;
     
     // Build type badges HTML
     const typeHtml = pokemon.types.map(type => 
@@ -263,7 +295,7 @@ class GameUI {
       ${pokemon.count > 1 ? `<div class="pokemon-counter">${pokemon.count}x</div>` : ''}
       <div class="gen-badge">Gen ${pokemon.gen}</div>
       <p>${pokemon.name}</p>
-      <img src="${img}" alt="${pokemon.name}">
+      <img src="${img}" alt="${pokemon.name}${isShinyMode ? ' Shiny' : ''}">
       <div class="rarity ${pokemon.rarity}">${pokemon.rarity}</div>
       <div class="types">${typeHtml}</div>
     `;
@@ -294,14 +326,7 @@ class GameUI {
       const sortedPokemon = this.game.sortPokemon(this.currentSortBy);
       const pokedexContainer = document.getElementById('pokedex');
       
-      // Clear and rebuild if this is a new entry (rare case, only happens when first catching a Pokémon)
-      // This ensures proper sort order
-      if (this.game.uniquePokemonCount === 1 || this.currentSortBy !== 'rarity') {
-        this.renderPokedex(this.currentSortBy);
-      } else {
-        // Just add the new entry
-        this.fetchAndRenderPokemon(pokemon, pokedexContainer);
-      }
+      this.renderPokedex(this.currentSortBy);
     }
   }
   

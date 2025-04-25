@@ -147,7 +147,10 @@ class WelcomeScreen {
         // Play appropriate sounds based on results
         results.forEach(result => {
           if (result.caught) {
-            if (MYTHICAL_POKEMON.has(result.name.toLowerCase())) {
+            console.log('result: '+ result.isShiny)
+            if (result.isShiny) {
+              this.audioManager.playSfx('shiny')
+            } else if (MYTHICAL_POKEMON.has(result.name.toLowerCase())) {
               this.audioManager.playSfx('mythical');
             } else if (LEGENDARY_POKEMON.has(result.name.toLowerCase())) {
               this.audioManager.playSfx('legendary');
@@ -416,6 +419,7 @@ class WelcomeScreen {
         mythical: new Audio('./assets/mythical.mp3'),
         miss: new Audio('./assets/miss.mp3'),
         upgrade: new Audio('./assets/SFX_LEVEL_UP.wav'),
+        shiny: new Audio('./assets/shiny.mp3'),
         genComplete: new Audio('./assets/genComplete.mp3')
       };
       

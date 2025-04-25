@@ -6,11 +6,16 @@ class PokemonGame {
     this.coins = GAME_CONFIG.initialCoins;
     this.catchInterval = GAME_CONFIG.initialCatchInterval;
     this.pokemonCollection = new Map(); // Map of name -> {count, gen, types, rarity}
+    this.shinyPokemonCollection = new Map(); // Map of name -> {count, gen, types, rarity}
     this.uniquePokemonCount = 0;
+    this.uniqueShinyCount = 0;
     this.totalCaught = 0;
+    this.totalShinyCaught = 0;
     this.currentGen = 1;
     this.catchAmount = 1;
     this.intervalId = null;
+    this.rebirthLevel = 0; // Track rebirth level for shiny rate bonus
+    this.isDexShinyMode = false; // Flag to toggle between normal and shiny Pokédex
     
     // Load saved data
     this.loadGame();
@@ -24,12 +29,21 @@ class PokemonGame {
         collectionObj[name] = data;
       });
       
+      // Convert shiny Map to Object for localStorage
+      const shinyCollectionObj = {};
+      this.shinyPokemonCollection.forEach((data, name) => {
+        shinyCollectionObj[name] = data;
+      });
+      
       const gameData = {
         coins: this.coins,
         catchInterval: this.catchInterval,
         pokemonCollection: collectionObj,
+        shinyPokemonCollection: shinyCollectionObj,
         uniquePokemonCount: this.uniquePokemonCount,
+        uniqueShinyCount: this.uniqueShinyCount,
         totalCaught: this.totalCaught,
+        totalShinyCaught: this.totalShinyCaught,
         currentGen: this.currentGen,
         catchAmount: this.catchAmount,
         qualityLevel: this.qualityLevel || 0,
@@ -39,7 +53,9 @@ class PokemonGame {
         autoReleaseEnabled: this.autoReleaseEnabled || false,
         pokeBalls: this.pokeBalls || {},
         genMastery: this.genMastery || {},
-        mythicalBoosterLevel: this.mythicalBoosterLevel || 0
+        mythicalBoosterLevel: this.mythicalBoosterLevel || 0,
+        rebirthLevel: this.rebirthLevel || 0,
+        isDexShinyMode: this.isDexShinyMode || false
       };
       
       localStorage.setItem("idlePokemonGame", JSON.stringify(gameData));
@@ -54,7 +70,9 @@ class PokemonGame {
           this.coins = gameData.coins || GAME_CONFIG.initialCoins;
           this.catchInterval = gameData.catchInterval || GAME_CONFIG.initialCatchInterval;
           this.uniquePokemonCount = gameData.uniquePokemonCount || 0;
+          this.uniqueShinyCount = gameData.uniqueShinyCount || 0;
           this.totalCaught = gameData.totalCaught || 0;
+          this.totalShinyCaught = gameData.totalShinyCaught || 0;
           this.currentGen = gameData.currentGen || 1;
           this.catchAmount = gameData.catchAmount || 1;
           this.qualityLevel = gameData.qualityLevel || 0;
@@ -65,11 +83,20 @@ class PokemonGame {
           this.pokeBalls = gameData.pokeBalls || {};
           this.genMastery = gameData.genMastery || {};
           this.mythicalBoosterLevel = gameData.mythicalBoosterLevel || 0;
+          this.rebirthLevel = gameData.rebirthLevel || 0;
+          this.isDexShinyMode = gameData.isDexShinyMode || false;
           
           // Load Pokemon collection
           if (gameData.pokemonCollection) {
             Object.keys(gameData.pokemonCollection).forEach(name => {
               this.pokemonCollection.set(name, gameData.pokemonCollection[name]);
+            });
+          }
+          
+          // Load Shiny Pokemon collection
+          if (gameData.shinyPokemonCollection) {
+            Object.keys(gameData.shinyPokemonCollection).forEach(name => {
+              this.shinyPokemonCollection.set(name, gameData.shinyPokemonCollection[name]);
             });
           }
 
@@ -103,11 +130,69 @@ class PokemonGame {
         }
     });
     
+    // Also check shiny collection
+    this.shinyPokemonCollection.forEach((data, name) => {
+        // Skip if no types data
+        if (!data.types || data.types.length === 0) return;
+        
+        // Calculate what the rarity should be based on current TYPE_RARITY
+        const newRarity = this.getRarityByType(data.types, name);
+        
+        // If the rarity is different, update it
+        if (data.rarity !== newRarity) {
+            data.rarity = newRarity;
+            migrationCount++;
+        }
+    });
+    
     // Log the migration results
     if (migrationCount > 0) {
         console.log(`Updated rarity for ${migrationCount} Pokémon based on new type rarity settings.`);
         this.saveGame(); // Save the migrated data
     }
+  }
+  
+  // Toggle between normal and shiny Pokédex mode
+  toggleDexMode() {
+    this.isDexShinyMode = !this.isDexShinyMode;
+    this.saveGame();
+    return this.isDexShinyMode;
+  }
+  
+  // Get the current Pokédex collection based on mode
+  getCurrentCollection() {
+    return this.isDexShinyMode ? this.shinyPokemonCollection : this.pokemonCollection;
+  }
+  
+  // Get the appropriate Pokédex stats based on mode
+  getPokedexStats() {
+    // Calculate total available based on the generations unlocked
+    let totalAvailable = 0;
+    for (let gen = 1; gen <= this.currentGen; gen++) {
+      totalAvailable += GENERATIONS[gen].end - GENERATIONS[gen].start + 1;
+    }
+    
+    if (this.isDexShinyMode) {
+      return {
+        caught: this.uniqueShinyCount,
+        total: totalAvailable,
+        percent: Math.round((this.uniqueShinyCount / totalAvailable) * 100),
+        isShiny: true
+      };
+    } else {
+      return {
+        caught: this.uniquePokemonCount,
+        total: totalAvailable,
+        percent: Math.round((this.uniquePokemonCount / totalAvailable) * 100),
+        isShiny: false
+      };
+    }
+  }
+  
+  // Calculate shiny chance
+  getShinyChance() {
+    return GAME_CONFIG.shinyConfig.baseShinyRate + 
+           (this.rebirthLevel * GAME_CONFIG.shinyConfig.shinyBonusPerRebirth);
   }
   
   // Game mechanics
@@ -163,7 +248,7 @@ class PokemonGame {
     return false;
   }
   
-  // Game logic and mechanics - Only showing the updated catchPokemon function
+  // Game logic and mechanics
   
   checkGenerationCompletion() {
     // For each generation the player has access to
@@ -188,23 +273,10 @@ class PokemonGame {
     return false;
   }
   
-  getPokedexStats() {
-    // Calculate total available based on the generations unlocked
-    let totalAvailable = 0;
-    for (let gen = 1; gen <= this.currentGen; gen++) {
-      totalAvailable += GENERATIONS[gen].end - GENERATIONS[gen].start + 1;
-    }
-    
-    return {
-      caught: this.uniquePokemonCount,
-      total: totalAvailable,
-      percent: Math.round((this.uniquePokemonCount / totalAvailable) * 100)
-    };
-  }
-  
-  sortPokemon(sortBy) {
+  sortPokemon(sortBy = 'rarity') {
     // Convert collection to array for sorting
-    const pokemonArray = Array.from(this.pokemonCollection, ([name, data]) => ({
+    const currentCollection = this.getCurrentCollection();
+    const pokemonArray = Array.from(currentCollection, ([name, data]) => ({
       name: name,
       ...data
     }));
@@ -402,17 +474,23 @@ class PokemonGame {
   }
   
   // Calculate coins earned for a catch with all bonuses
-  calculateCoinReward(rarity, generation) {
+  calculateCoinReward(rarity, generation, isShiny) {
       // Base reward
       let coins = GAME_CONFIG.catchReward;
       
       // Apply rarity bonus
       if (rarity === 'rare') coins *= 2;
       if (rarity === 'legendary') coins *= 5;
+      if (rarity === 'mythical') coins *= 10;
+      
+      // Apply shiny bonus if applicable
+      if (isShiny) {
+        coins *= GAME_CONFIG.shinyConfig.shinyCoinsMultiplier;
+      }
       
       // Apply coin multiplier if available
       if (this.coinMultiplier) {
-      coins *= this.coinMultiplier;
+        coins *= this.coinMultiplier;
       }
       
       // Apply generation mastery bonus if available
@@ -421,19 +499,31 @@ class PokemonGame {
       return Math.round(coins);
   }
   
-  // Modified catchPokemon method to include auto-release and coin calculations
+  // Calculate auto-release coin value with bonuses
+  calculateAutoReleaseValue(rarity, isShiny) {
+    let value = GAME_CONFIG.autoReleaseValue[rarity.toLowerCase()] || 1;
+    
+    // Apply shiny bonus if applicable
+    if (isShiny) {
+      value *= GAME_CONFIG.shinyConfig.shinyAutoReleaseBonus;
+    }
+    
+    return value;
+  }
+  
+  // Modified catchPokemon method to include shiny chance, auto-release and coin calculations
   async catchPokemon() {
       const results = [];
       const pokemonPromises = [];
       
       // Create all fetch promises at once
       for (let i = 0; i < this.catchAmount; i++) {
-      const id = this.getRandomPokemonId();
-      pokemonPromises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+        const id = this.getRandomPokemonId();
+        pokemonPromises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
           .then(res => res.json())
           .catch(error => {
-          console.error(`Error fetching Pokémon #${id}:`, error);
-          return { error: true, id: id };
+            console.error(`Error fetching Pokémon #${id}:`, error);
+            return { error: true, id: id };
           }));
       }
       
@@ -442,79 +532,98 @@ class PokemonGame {
       
       // Process catch results
       pokemonData.forEach(data => {
-      if (data.error) {
+        if (data.error) {
           results.push({
-          caught: false,
-          error: true
+            caught: false,
+            error: true
           });
           return;
-      }
-      
-      const name = data.name.toUpperCase();
-      const types = data.types.map(type => type.type.name);
-      const generation = this.getPokemonGeneration(data.id);
-      const rarity = this.getRarityByType(types, name);
-      
-      // Apply catch rate bonus to miss chance
-      const missChance = Math.max(0, this.getMissChance(rarity) - this.getCatchRateBonus());
-      
-      // Miss logic
-      if (rarity === "mythical") {
-        const mythicalMissChance = Math.max(0, missChance - this.getMythicalBoosterBonus());
+        }
+        
+        const name = data.name.toUpperCase();
+        const types = data.types.map(type => type.type.name);
+        const generation = this.getPokemonGeneration(data.id);
+        const rarity = this.getRarityByType(types, name);
+        
+        // Determine if this is a shiny encounter
+        const isShiny = Math.random() < this.getShinyChance();
+        
+        // Apply catch rate bonus to miss chance
+        const missChance = Math.max(0, this.getMissChance(rarity) - this.getCatchRateBonus());
+        
+        // Miss logic
+        if (rarity === "mythical") {
+          const mythicalMissChance = Math.max(0, missChance - this.getMythicalBoosterBonus());
 
-        if (Math.random() < mythicalMissChance) {
-          results.push({
-          caught: false,
-          rarity: rarity
-          });
-          return;
+          if (Math.random() < mythicalMissChance) {
+            results.push({
+              caught: false,
+              rarity: rarity
+            });
+            return;
+          }
+        } else {
+          if (Math.random() < missChance) {
+            results.push({
+              caught: false,
+              rarity: rarity
+            });
+            return;
+          }
         }
-      } else {
-        if (Math.random() < missChance) {
-          results.push({
-          caught: false,
-          rarity: rarity
-          });
-          return;
-        }
-      }
-      
-      // Success - calculate coins earned
-      const coinsEarned = this.calculateCoinReward(rarity, generation);
-      let autoReleased = false;
-      
-      // Check for auto-release
-      const isDuplicate = this.pokemonCollection.has(name);
-      if (isDuplicate && this.autoReleaseEnabled) {
+        
+        // Success - calculate coins earned
+        const coinsEarned = this.calculateCoinReward(rarity, generation, isShiny);
+        let autoReleased = false;
+        
+        // Check for auto-release - different logic for normal vs shiny
+        const currentCollection = isShiny ? this.shinyPokemonCollection : this.pokemonCollection;
+        const isDuplicate = currentCollection.has(name);
+        
+        if (isDuplicate && this.autoReleaseEnabled) {
           // Auto-release for extra coins
-          const extraCoins = GAME_CONFIG.autoReleaseValue[rarity.toLowerCase()];
+          const extraCoins = this.calculateAutoReleaseValue(rarity, isShiny);
           this.coins += coinsEarned + extraCoins;
           autoReleased = true;
-      } else {
+        } else {
           // Normal catch
           this.coins += coinsEarned;
           
           // Update collection
           if (isDuplicate) {
-          const pokemonData = this.pokemonCollection.get(name);
-          pokemonData.count++;
-          this.pokemonCollection.set(name, pokemonData);
+            const pokemonData = currentCollection.get(name);
+            pokemonData.count++;
+            currentCollection.set(name, pokemonData);
           } else {
-          this.pokemonCollection.set(name, {
+            currentCollection.set(name, {
               count: 1,
               gen: generation,
               types: types,
               rarity: rarity,
-              id: data.id
-          });
-          this.uniquePokemonCount++;
+              id: data.id,
+              isShiny: isShiny
+            });
+            
+            // Update unique counter
+            if (isShiny) {
+              this.uniqueShinyCount++;
+            } else {
+              this.uniquePokemonCount++;
+            }
           }
-      }
-      
-      this.totalCaught++;
-      const img = data.sprites.front_default;
-      
-      results.push({
+        }
+        
+        // Update total catch counters
+        if (isShiny) {
+          this.totalShinyCaught++;
+        } else {
+          this.totalCaught++;
+        }
+        
+        // Get appropriate sprite based on shiny status
+        const img = isShiny ? data.sprites.front_shiny : data.sprites.front_default;
+        
+        results.push({
           caught: true,
           name: name,
           img: img,
@@ -523,17 +632,52 @@ class PokemonGame {
           isDuplicate: isDuplicate,
           generation: generation,
           coinsEarned: coinsEarned,
-          autoReleased: autoReleased
-      });
+          autoReleased: autoReleased,
+          isShiny: isShiny
+        });
       });
       
       this.saveGame();
       
       // Check for generation mastery
       for (let gen = 1; gen <= this.currentGen; gen++) {
-      this.checkGenMastery(gen);
+        this.checkGenMastery(gen);
       }
       
       return results;
+  }
+  
+  // Rebirth system - reset game but keep some permanent bonuses
+  rebirth() {
+    // Only allow rebirth if player has mastered at least one generation
+    if (!this.genMastery || Object.keys(this.genMastery).length === 0) {
+      return false;
+    }
+    
+    // Increment rebirth level
+    this.rebirthLevel = (this.rebirthLevel || 0) + 1;
+    
+    // Reset game state but keep permanent bonuses
+    this.coins = GAME_CONFIG.initialCoins;
+    this.catchInterval = GAME_CONFIG.initialCatchInterval;
+    this.pokemonCollection = new Map();
+    this.uniquePokemonCount = 0;
+    this.totalCaught = 0;
+    this.currentGen = 1;
+    this.catchAmount = 1;
+    this.qualityLevel = 0;
+    this.coinMultiplierLevel = 0;
+    this.coinMultiplier = 1;
+    this.catchRateBonus = 0;
+    this.autoReleaseEnabled = false;
+    this.pokeBalls = {};
+    this.genMastery = {};
+    this.mythicalBoosterLevel = 0;
+    
+    // Keep shiny collection intact across rebirths
+    // (we don't reset shinyPokemonCollection, uniqueShinyCount, or totalShinyCaught)
+    
+    this.saveGame();
+    return true;
   }
 }

@@ -43,3 +43,9 @@
 ## 1.2.4
 - Clean up codes
 - Added ShinyConfigs
+
+## 1.3.0
+- Added Shiny Pokemons!
+- Shiny Pokedex!
+- Shiny Stat Panel
+- Shiny sfx

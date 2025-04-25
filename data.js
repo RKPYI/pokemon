@@ -148,7 +148,7 @@ const GENERATIONS = {
     },
 
     shinyConfig: {
-      baseShinyRate: 0.1, // 1/4096 chance (standard shiny rate in modern games) 0.000244
+      baseShinyRate: 0.000244, // 1/4096 chance (standard shiny rate in modern games)
       shinyBonusPerRebirth: 0.000122, // Additional 1/8192 chance per rebirth level
       shinyCoinsMultiplier: 500, // Shinies give 5x coins when caught
       shinyAutoReleaseBonus: 10 // Extra coins when auto-releasing shinies
