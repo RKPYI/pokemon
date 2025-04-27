@@ -46,6 +46,7 @@
 }
 
 .upgrades button, 
+.rebirth-upgrades button,
 .poke-balls button {
     margin-top: var(--space-sm);
     width: 100%;

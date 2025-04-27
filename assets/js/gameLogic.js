@@ -17,6 +17,12 @@ class PokemonGame {
     this.rebirthLevel = 0; // Track rebirth level for shiny rate bonus
     this.isDexShinyMode = false; // Flag to toggle between normal and shiny Pokédex
     
+    this.rebirthUpgrades = {
+      permanentCatchSpeed: 0,
+      permanentCoinBoost: 0,
+      shinyBoost: 0
+    };
+
     // Load saved data
     this.loadGame();
   }
@@ -55,7 +61,8 @@ class PokemonGame {
         genMastery: this.genMastery || {},
         mythicalBoosterLevel: this.mythicalBoosterLevel || 0,
         rebirthLevel: this.rebirthLevel || 0,
-        isDexShinyMode: this.isDexShinyMode || false
+        isDexShinyMode: this.isDexShinyMode || false,
+        rebirthUpgrades: this.rebirthUpgrades
       };
       
       localStorage.setItem("idlePokemonGame", JSON.stringify(gameData));
@@ -85,6 +92,11 @@ class PokemonGame {
           this.mythicalBoosterLevel = gameData.mythicalBoosterLevel || 0;
           this.rebirthLevel = gameData.rebirthLevel || 0;
           this.isDexShinyMode = gameData.isDexShinyMode || false;
+          this.rebirthUpgrades = gameData.rebirthUpgrades || {
+            permanentCatchSpeed: 0,
+            permanentCoinBoost: 0,
+            shinyBoost: 0
+          };
           
           // Load Pokemon collection
           if (gameData.pokemonCollection) {
@@ -191,8 +203,16 @@ class PokemonGame {
   
   // Calculate shiny chance
   getShinyChance() {
-    return GAME_CONFIG.shinyConfig.baseShinyRate + 
-           (this.rebirthLevel * GAME_CONFIG.shinyConfig.shinyBonusPerRebirth);
+    let chance = GAME_CONFIG.shinyConfig.baseShinyRate + 
+                (this.rebirthLevel * GAME_CONFIG.shinyConfig.shinyBonusPerRebirth);
+    
+    // Apply permanent shiny boost
+    if (this.rebirthUpgrades && this.rebirthUpgrades.shinyBoost > 0) {
+      chance += this.rebirthUpgrades.shinyBoost * 
+               GAME_CONFIG.rebirthUpgrades.shinyBoost.effectPerLevel;
+    }
+    
+    return chance;
   }
   
   // Game mechanics
@@ -495,6 +515,13 @@ class PokemonGame {
       
       // Apply generation mastery bonus if available
       coins *= this.getGenMasteryBonus(generation);
+
+      // Apply permanent coin boost from rebirth upgrades
+      if (this.rebirthUpgrades && this.rebirthUpgrades.permanentCoinBoost > 0) {
+        const coinBoost = this.rebirthUpgrades.permanentCoinBoost * 
+                         GAME_CONFIG.rebirthUpgrades.permanentCoinBoost.effectPerLevel;
+        coins *= (1 + coinBoost);
+      }
       
       return Math.round(coins);
   }
@@ -646,6 +673,38 @@ class PokemonGame {
       
       return results;
   }
+
+  checkRebirthUpgrade(upgradeType) {
+    const upgradeConfig = GAME_CONFIG.rebirthUpgrades[upgradeType];
+    
+    // Check if upgrade exists
+    if (!upgradeConfig) return false;
+    
+    // Check if player has required rebirth level
+    if (this.rebirthLevel < upgradeConfig.rebirthRequired) return false;
+    
+    // Check if player has enough coins
+    if (this.coins < upgradeConfig.cost) return false;
+    
+    // Check if upgrade is at max level
+    if (this.rebirthUpgrades[upgradeType] >= upgradeConfig.maxLevel) return false;
+
+    return true
+  }
+
+  purchaseRebirthUpgrade(upgradeType) {
+    const upgradeConfig = GAME_CONFIG.rebirthUpgrades[upgradeType];
+    
+    if (!this.checkRebirthUpgrade(upgradeType)) {
+      return false; // Upgrade not available
+    }
+    
+    // Purchase upgrade
+    this.coins -= upgradeConfig.cost;
+    this.rebirthUpgrades[upgradeType]++;
+    this.saveGame();
+    return true;
+  }
   
   rebirthEligibility() {
     if (!this.genMastery) this.genMastery = {};
@@ -666,12 +725,15 @@ class PokemonGame {
     // Increment rebirth level
     this.rebirthLevel = (this.rebirthLevel || 0) + 1;
     
+    // Save current rebirth upgrades
+    const savedRebirthUpgrades = {...this.rebirthUpgrades};
+
     // Reset game state but keep permanent bonuses
     this.coins = GAME_CONFIG.initialCoins;
     this.catchInterval = GAME_CONFIG.initialCatchInterval;
     this.pokemonCollection = new Map();
     this.uniquePokemonCount = 0;
-    // this.totalCaught = 0;
+    // this.totalCaught = 0; // keep total caught
     this.currentGen = 1;
     this.catchAmount = 1;
     this.qualityLevel = 0;
@@ -682,6 +744,9 @@ class PokemonGame {
     this.pokeBalls = {};
     this.genMastery = {};
     this.mythicalBoosterLevel = 0;
+
+    // Restore rebirth upgrades
+    this.rebirthUpgrades = savedRebirthUpgrades;
     
     // Keep shiny collection intact across rebirths
     // (we don't reset shinyPokemonCollection, uniqueShinyCount, or totalShinyCaught)

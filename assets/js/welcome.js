@@ -197,14 +197,25 @@ class WelcomeScreen {
         };
       });
 
-      const rebirthButton = document.getElementById('rebirth-button');
-      const originalRebirthClickHandler = rebirthButton.onclick;
+      // Add sounds effect to rebirth upgrades
+      const rebirthButtons = [
+        'rebirth-button',
+        'upgrade-permanent-speed',
+        'upgrade-permanent-coin',
+        'upgrade-shiny-boost'
+      ];
 
-      rebirthButton.onclick = (e) => {
-        const result = originalRebirthClickHandler ? originalRebirthClickHandler(e) : undefined;
-        game.audioManager.playSfx('rebirth');
-        return result;
-      };
+      rebirthButtons.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        const originalClickHandler = btn.onclick;
+        
+        btn.onclick = (e) => {
+          const result = originalClickHandler ? originalClickHandler(e) : undefined;
+          game.audioManager.playSfx('rebirth');
+          return result;
+        };
+      });
+      
     }
     
     addWelcomeStyles() {

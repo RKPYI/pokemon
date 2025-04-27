@@ -56,6 +56,30 @@ class GameUI {
           this.renderPokedex(this.currentSortBy);
         }
       });
+
+      document.getElementById('upgrade-permanent-speed').addEventListener('click', () => {
+        if (this.game.purchaseRebirthUpgrade('permanentCatchSpeed')) {
+          this.updateStats();
+          this.updateRebirthUpgradesUI();
+          this.restartGameLoop();
+        }
+      });
+      
+      document.getElementById('upgrade-permanent-coin').addEventListener('click', () => {
+        if (this.game.purchaseRebirthUpgrade('permanentCoinBoost')) {
+          this.updateStats();
+          this.updateRebirthUpgradesUI();
+        }
+      });
+      
+      document.getElementById('upgrade-shiny-boost').addEventListener('click', () => {
+        if (this.game.purchaseRebirthUpgrade('shinyBoost')) {
+          this.updateStats();
+          this.updateRebirthUpgradesUI();
+        }
+      });
+
+      this.updateRebirthUpgradesUI();
       
       // Set up event listeners for Pokeball upgrades
       document.getElementById('upgrade-greatball').addEventListener('click', () => {
@@ -104,7 +128,7 @@ class GameUI {
       document.getElementById('catch-amount').textContent = this.game.catchAmount;
       document.getElementById('current-gen').textContent = this.game.currentGen;
       document.getElementById('quality-level').textContent = this.game.qualityLevel || 0;
-      document.getElementById('coin-multiplier').textContent = `${this.game.coinMultiplier || 1}x`;
+      document.getElementById('coin-multiplier').textContent = `${this.getCoinMultiplier() || 1}x`;
       document.getElementById('auto-release').textContent = this.game.autoReleaseEnabled ? 'Active' : 'Inactive';
       document.getElementById('mythicalBoosterCost').textContent = this.game.getMythicalBoosterCost();
       document.getElementById('rebirth-level').textContent = this.game.rebirthLevel;
@@ -135,6 +159,9 @@ class GameUI {
       
       // Update Generation Mastery status
       this.updateGenMasteryStatus();
+
+      // Update rebirth upgrades UI
+      this.updateRebirthUpgradesUI();
   }
 
   updateUpgradeButtons() {
@@ -165,6 +192,8 @@ class GameUI {
 
       const rebirthButton = document.getElementById('rebirth-button');
       rebirthButton.disabled = !this.game.rebirthEligibility();
+
+      this.updateRebirthUpgradeButtonStates();
   }
   
   updatePokeballStatus() {
@@ -248,6 +277,17 @@ class GameUI {
           banner.parentNode.removeChild(banner);
       }
       }, 10000);
+  }
+
+  getCoinMultiplier() {
+    let coins = this.game.coinMultiplier;
+    if (this.game.rebirthUpgrades && this.game.rebirthUpgrades.permanentCoinBoost > 0) {
+      const coinBoost = this.game.rebirthUpgrades.permanentCoinBoost * 
+                       GAME_CONFIG.rebirthUpgrades.permanentCoinBoost.effectPerLevel;
+      coins *= (1 + coinBoost);
+    }
+
+    return coins;
   }
   
   renderPokedex(sortBy = 'rarity') {
@@ -518,13 +558,18 @@ class GameUI {
   }
 
   getEffectiveCatchInterval() {
-    let effectiveCatchInterval = this.game.catchInterval * (1 - (this.game.rebirthLevel * 0.1));
-  
-    // Ensure the interval doesn't go below a minimum value (e.g., 100ms)
-    const minInterval = 100;
-    effectiveCatchInterval = Math.max(effectiveCatchInterval, minInterval);
-
-    return effectiveCatchInterval;
+    // Calculate base interval with rebirth bonus
+    let effectiveInterval = this.game.catchInterval * (1 - (this.game.rebirthLevel * 0.1));
+    
+    // Apply permanent catch speed bonus
+    if (this.game.rebirthUpgrades && this.game.rebirthUpgrades.permanentCatchSpeed > 0) {
+      const speedBoost = this.game.rebirthUpgrades.permanentCatchSpeed * 
+                        GAME_CONFIG.rebirthUpgrades.permanentCatchSpeed.effectPerLevel;
+      effectiveInterval *= (1 - speedBoost);
+    }
+    
+    // Ensure min interval
+    return Math.max(effectiveInterval, 100);
   }
   
   restartGameLoop() {
@@ -673,5 +718,47 @@ class GameUI {
     } else {
       catchRateBar.style.backgroundColor = '#ff7b00'; // Orange for low bonus
     }
+  }
+
+  updateRebirthUpgradesUI() {
+    // Update levels display
+    document.getElementById('permanent-speed-level').textContent = 
+      `${this.game.rebirthUpgrades.permanentCatchSpeed}/${GAME_CONFIG.rebirthUpgrades.permanentCatchSpeed.maxLevel}`;
+      
+    document.getElementById('permanent-coin-level').textContent = 
+      `${this.game.rebirthUpgrades.permanentCoinBoost}/${GAME_CONFIG.rebirthUpgrades.permanentCoinBoost.maxLevel}`;
+      
+    document.getElementById('shiny-boost-level').textContent = 
+      `${this.game.rebirthUpgrades.shinyBoost}/${GAME_CONFIG.rebirthUpgrades.shinyBoost.maxLevel}`;
+    
+    // Update button states
+    this.updateRebirthUpgradeButtonStates();
+  }
+
+  updateRebirthUpgradeButtonStates() {
+    const speedConfig = GAME_CONFIG.rebirthUpgrades.permanentCatchSpeed;
+    const coinConfig = GAME_CONFIG.rebirthUpgrades.permanentCoinBoost;
+    const shinyConfig = GAME_CONFIG.rebirthUpgrades.shinyBoost;
+    
+    // Speed upgrade button
+    const speedButton = document.getElementById('upgrade-permanent-speed');
+    speedButton.disabled = 
+      this.game.rebirthLevel < speedConfig.rebirthRequired ||
+      this.game.coins < speedConfig.cost ||
+      this.game.rebirthUpgrades.permanentCatchSpeed >= speedConfig.maxLevel;
+    
+    // Coin upgrade button
+    const coinButton = document.getElementById('upgrade-permanent-coin');
+    coinButton.disabled = 
+      this.game.rebirthLevel < coinConfig.rebirthRequired ||
+      this.game.coins < coinConfig.cost ||
+      this.game.rebirthUpgrades.permanentCoinBoost >= coinConfig.maxLevel;
+    
+    // Shiny upgrade button
+    const shinyButton = document.getElementById('upgrade-shiny-boost');
+    shinyButton.disabled = 
+      this.game.rebirthLevel < shinyConfig.rebirthRequired ||
+      this.game.coins < shinyConfig.cost ||
+      this.game.rebirthUpgrades.shinyBoost >= shinyConfig.maxLevel;
   }
 }

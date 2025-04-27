@@ -73,3 +73,9 @@
 ## 1.4.3
 - Fix when first playing, if genMastery in rebirthEligibility() is not declared yet the game is unplayable.
 - Fix pokedex not re-rendered when rebirthed
+
+## 1.4.4
+- Added 3 new rebirth upgrades
+- first one Permanently increases catch speed. Requires 1 rebirth
+- Second one Permanently increases coin boosts. Requires 2 rebirths
+- Third one Permanently increase shiny chances. Requires 3 rebirths

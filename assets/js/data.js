@@ -153,4 +153,31 @@ const GENERATIONS = {
       shinyCoinsMultiplier: 500, // Shinies give 5x coins when caught
       shinyAutoReleaseBonus: 10 // Extra coins when auto-releasing shinies
     },
+
+    rebirthUpgrades: {
+      permanentCatchSpeed: {
+        name: "Permanent Catch Speed",
+        description: "+5% permanent catch speed boost",
+        cost: 500,
+        maxLevel: 10,
+        rebirthRequired: 1,
+        effectPerLevel: 0.05  // 5% speed boost per level
+      },
+      permanentCoinBoost: {
+        name: "Permanent Coin Boost",
+        description: "+100% permanent coin boost",
+        cost: 750,
+        maxLevel: 5,
+        rebirthRequired: 2,
+        effectPerLevel: 1   // 100% coin boost per level
+      },
+      shinyBoost: {
+        name: "Shiny Hunter",
+        description: "Permanent shiny chance +5%",
+        cost: 1000,
+        maxLevel: 3,
+        rebirthRequired: 3,
+        effectPerLevel: 0.0005  // 0.05% (1/2000) increase per level
+      }
+    }
   };
