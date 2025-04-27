@@ -27,7 +27,7 @@ const GENERATIONS = {
     // Gen 5
     "cobalion", "terrakion", "virizion", "tornadus-incarnate", "thundurus-incarnate", "reshiram", "zekrom", "landorus-incarnate", "kyurem", "keldeo-ordinary", "meloetta-aria", "genesect",
     // Gen 6
-    "xerneas", "yveltal", "zygarde", "diancie", "hoopa", "volcanion",
+    "xerneas", "yveltal", "zygarde-50", "diancie", "hoopa", "volcanion",
     // Gen 7
     "tapu-koko", "tapu-lele", "tapu-bulu", "tapu-fini", "type-null", "silvally", "cosmog", "cosmoem", "solgaleo", "lunala", "nihilego", "buzzwole", "pheromosa", "xurkitree", "celesteela", "kartana", "guzzlord", "necrozma", "magearna", "marshadow", "zeraora", "meltan", "melmetal",
     // Gen 8

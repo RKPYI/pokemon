@@ -153,6 +153,14 @@
     .catch-rate-details {
         grid-template-columns: 1fr;
     }
+
+    /* Badges */
+    .pokemon-counter {
+        margin-top: 20px;
+    }
+    .gen-badge {
+        margin-top: 20px;
+    }
 }
 
 /* Very small screens */

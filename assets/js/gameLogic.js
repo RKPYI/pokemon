@@ -247,6 +247,7 @@ class PokemonGame {
     if (id <= GENERATIONS[4].end) return 4;
     if (id <= GENERATIONS[5].end) return 5;
     if (id <= GENERATIONS[6].end) return 6;
+    if (id <= GENERATIONS[7].end) return 7;
     return 1; // Default to Gen 1 if ID is out of range
   }
   
@@ -283,9 +284,14 @@ class PokemonGame {
       });
       
       // Check if we completed this generation and haven't unlocked next gen yet
-      if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < (this.rebirthLevel+1) && gen < 6) {
+      if (caughtInGen === pokemonInGenCount && gen === this.currentGen && gen < (this.rebirthLevel+1) && gen < 7) {
         this.currentGen++;
-        this.catchAmount = Math.min(this.currentGen, 3);
+        if (this.currentGen >= 7) {
+          this.catchAmount = 4;
+        } else {
+          this.catchAmount = Math.min(this.currentGen, 3);
+        }
+        
         this.saveGame();
         return true;
       }

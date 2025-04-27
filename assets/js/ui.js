@@ -245,7 +245,7 @@ class GameUI {
   
   updateGenMasteryStatus() {
       // Update the generation mastery status for each generation
-      for (let gen = 1; gen <= 6; gen++) {
+      for (let gen = 1; gen <= 7; gen++) {
       const genMasteryElement = document.getElementById(`gen${gen}-mastery`);
       if (this.game.genMastery && this.game.genMastery[gen]) {
           genMasteryElement.textContent = 'Mastered (2x coins)';
@@ -538,11 +538,12 @@ class GameUI {
   showGenerationComplete(generation) {
     const banner = document.createElement('div');
     banner.classList.add('gen-complete');
+    const youcannowcatch =  generation >= 7 ? 4 : Math.min(generation + 1, 3);
     banner.innerHTML = `
       <h3>Generation ${generation} Complete!</h3>
       <p>You've caught all Pokémon from Generation ${generation}!</p>
       <p>Now you can catch Generation ${generation + 1} Pokémon!</p>
-      <p>You can now catch ${Math.min(generation + 1, 3)} Pokémon at once!</p>
+      <p>You can now catch ${youcannowcatch} Pokémon at once!</p>
     `;
     
     // Insert after the pokemon-card

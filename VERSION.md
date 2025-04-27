@@ -79,3 +79,9 @@
 - first one Permanently increases catch speed. Requires 1 rebirth
 - Second one Permanently increases coin boosts. Requires 2 rebirths
 - Third one Permanently increase shiny chances. Requires 3 rebirths
+
+## 1.4.5
+- Fix some gen 6 pokemon rarity
+- Adding gen 7
+- Gen 7 and higher can catch 4 pokemon at once!
+- Lowering gen badges and counters when on smaller screens.
