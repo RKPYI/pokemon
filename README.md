@@ -9,7 +9,7 @@
 
 **Catch 'em all while you do nothing!**
 
-[🎮 Play Now!](https://rkpyi.github.io/pokemon/) | [📚 About](#overview) | [✨ Features](#features) | [🚀 Getting Started](#getting-started)
+[🎮 Play Now!](https://rkpyi.github.io/pokemon/) | [📚 About](#-overview) | [✨ Features](#features) | [🚀 Getting Started](#getting-started)
 
 </div>
 
