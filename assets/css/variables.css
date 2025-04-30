@@ -26,6 +26,8 @@
     --legendary-text: #c62828;
     --mythical-bg: #e1bee7;
     --mythical-text: #6a1b9a;
+    --ultra-beast-bg: #2a0055;
+    --ultra-beast-text: #ff00e5;
 
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);

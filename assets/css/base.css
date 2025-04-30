@@ -53,3 +53,15 @@ button:disabled {
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
 }
+
+@keyframes shimmer {
+    0% {
+        left: -75%;
+    }
+    50% {
+        left: 125%;
+    }
+    100% {
+        left: 125%;
+    }
+}

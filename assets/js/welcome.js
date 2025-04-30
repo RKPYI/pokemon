@@ -149,7 +149,7 @@ class WelcomeScreen {
           if (result.caught) {
             if (result.isShiny) {
               this.audioManager.playSfx('shiny')
-            } else if (MYTHICAL_POKEMON.has(result.name.toLowerCase())) {
+            } else if (MYTHICAL_POKEMON.has(result.name.toLowerCase()) || ULTRA_BEASTS.has(result.name.toLowerCase())) {
               this.audioManager.playSfx('mythical');
             } else if (LEGENDARY_POKEMON.has(result.name.toLowerCase())) {
               this.audioManager.playSfx('legendary');

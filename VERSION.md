@@ -1,3 +1,11 @@
+## 1.5.0
+- Added new rarity *Ultra Beast*
+- Ultra Beast pokemon only available on gen 7 pokemon
+- Ultra Beast has a 1% chance catch rate and boostable with any mythical booster
+- Ultra Beast gives 5x more coins than Mythical pokemon
+- Added gradient to rarer pokemon cards
+- Ultra Beast shiny card will have a shimmering effect
+
 ## 1.4.5
 - Fix some gen 6 pokemon rarity
 - Adding gen 7

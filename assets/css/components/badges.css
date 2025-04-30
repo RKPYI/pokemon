@@ -67,3 +67,8 @@
     background: var(--mythical-bg);
     color: var(--mythical-text);
 }
+
+.ultra_beast {
+    background: var(--ultra-beast-bg);
+    color: var(--ultra-beast-text);
+}

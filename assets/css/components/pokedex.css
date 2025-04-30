@@ -38,12 +38,60 @@
     font-weight: bold;
 }
   
-/* Shiny Pokemon Entry */
-.shiny-entry {
+/* Shiny & Other Rarity Pokemon Entry */
+
+.shiny-entry.ultra-beast-entry {
+    position: relative;
+    background: linear-gradient(135deg, #eac808, #fff7c2, #f8e49c);
+    color: #2a0055;
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    overflow: hidden;
+}
+
+/* Animated gold shimmer */
+.shiny-entry.ultra-beast-entry::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    animation: shimmer 2.5s infinite;
+    pointer-events: none;
+}
+
+.shiny-entry:not(.rare-entry .legendary-entry .mythical-entry .ultra-beast-entry) {
     background: linear-gradient(135deg, #faf49e, #f8f9da, #fceda7);
     border: 1px solid var(--gray-light);
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
 }
+
+.rare-entry {
+    background: linear-gradient(135deg, #ffffff, #e0f7fa);
+}
+
+.legendary-entry {
+    background: linear-gradient(135deg,#fff, #f0e7ea);
+}
+
+.mythical-entry {
+    background: linear-gradient(135deg, #fff, #eeddff);
+}
+
+.ultra-beast-entry {
+    background: linear-gradient(150deg, #a3b,  #fdf);
+    color: var(--white);
+    border: 1px solid var(--gray-light);
+    box-shadow: 0 0 5px rgba(255, 0, 208, 0.3);
+}
+
   
 .shiny-stats h3 {
     color: #f1c40f;

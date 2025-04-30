@@ -339,6 +339,15 @@ class GameUI {
     const entry = document.createElement('div');
     entry.classList.add('poke-entry');
     if (isShinyMode) entry.classList.add('shiny-entry');
+    if (pokemon.rarity === 'ultra_beast') {
+      entry.classList.add('ultra-beast-entry');
+    } else if (pokemon.rarity === 'mythical') {
+      entry.classList.add('mythical-entry');
+    } else if (pokemon.rarity === 'legendary') {
+      entry.classList.add('legendary-entry');
+    } else if (pokemon.rarity === 'rare') {
+      entry.classList.add('rare-entry');
+    }
     entry.id = `poke-${pokemon.name.toLowerCase()}${isShinyMode ? '-shiny' : ''}`;
     
     // Build type badges HTML
@@ -351,7 +360,7 @@ class GameUI {
       <div class="gen-badge">Gen ${pokemon.gen}</div>
       <p>${pokemon.name}</p>
       <img src="${img}" alt="${pokemon.name}${isShinyMode ? ' Shiny' : ''}">
-      <div class="rarity ${pokemon.rarity}">${pokemon.rarity}</div>
+      <div class="rarity ${pokemon.rarity}">${pokemon.rarity === 'ultra_beast' ? 'Ultra Beast' : pokemon.rarity}</div>
       <div class="types">${typeHtml}</div>
     `;
     

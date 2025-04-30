@@ -217,7 +217,7 @@ class PokemonGame {
   
   // Game mechanics
   getRarityByType(types, name) {
-    // Check for legendary by name first
+    if (ULTRA_BEASTS.has(name.toLowerCase())) return "ultra_beast";
     if (MYTHICAL_POKEMON.has(name.toLowerCase())) return "mythical";
     if (LEGENDARY_POKEMON.has(name.toLowerCase())) return "legendary";
     
@@ -236,7 +236,8 @@ class PokemonGame {
     if (rarity === 'common') return 0.1;      // 10% miss chance
     if (rarity === 'rare') return 0.5;        // 50% miss chance
     if (rarity === 'legendary') return 0.8;   // 80% miss chance
-    if (rarity === 'mythical') return 0.8;   // 80% miss chance (can't be boosted)
+    if (rarity === 'mythical') return 0.8;   // 80% miss chance
+    if (rarity === 'ultra_beast') return 0.99; // 99% miss chance (boostable with mythical booster)
     return 0;
   }
   
@@ -310,7 +311,7 @@ class PokemonGame {
     switch(sortBy) {
       case 'rarity':
         // Sort by rarity (legendary > rare > common)
-        const rarityOrder = { mythical: 0, legendary: 1, rare: 2, common: 3 };
+        const rarityOrder = { ultra_beast: 0, mythical: 1, legendary: 2, rare: 3, common: 4 };
         return pokemonArray.sort((a, b) => 
           rarityOrder[a.rarity] - rarityOrder[b.rarity] || a.name.localeCompare(b.name)
         );
@@ -508,6 +509,7 @@ class PokemonGame {
       if (rarity === 'rare') coins *= 2;
       if (rarity === 'legendary') coins *= 5;
       if (rarity === 'mythical') coins *= 10;
+      if (rarity === 'ultra_beast') coins *= 50;
       
       // Apply shiny bonus if applicable
       if (isShiny) {
@@ -585,9 +587,9 @@ class PokemonGame {
         const missChance = Math.max(0, this.getMissChance(rarity) - this.getCatchRateBonus());
 
         // Miss logic
-        if (rarity === "mythical") {
+        if (rarity === "mythical" || rarity === "ultra_beast") {
           const mythicalMissChance = Math.max(0, this.getMissChance(rarity) - this.getMythicalBoosterBonus());
-
+          console.log(`Mythical miss chance: ${mythicalMissChance}`);
           if (Math.random() < mythicalMissChance) {
             results.push({
               caught: false,

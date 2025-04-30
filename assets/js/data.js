@@ -57,6 +57,27 @@ const GENERATIONS = {
     // Gen 9
     "walking-wake", "iron-leaves"
   ]);
+
+  // Ultra Beasts by name
+  const ULTRA_BEASTS = new Set([
+    // Gen 7
+    "nihilego", "buzzwole", "pheromosa", "xurkitree", "celesteela",
+    "kartana", "guzzlord", "poipole", "naganadel", "stakataka", "blacephalon"
+  ]);
+  
+  // unused until gen 9
+  const PARADOX_POKEMON = new Set([
+    // Scarlet (Ancient forms)
+    "great-tusk", "scream-tail", "brute-bonnet", "flutter-mane", 
+    "slither-wing", "sandy-shocks", "roaring-moon",
+  
+    // Violet (Future forms)
+    "iron-treads", "iron-bundle", "iron-hands", "iron-jugulis",
+    "iron-moth", "iron-thorns", "iron-valiant",
+  
+    // Others (DLC / special forms)
+    "walking-wake", "iron-leaves",
+  ]);
   
   // Type colors for badges
   const TYPE_COLORS = {
@@ -85,7 +106,9 @@ const GENERATIONS = {
     common: ["normal", "bug", "grass", "fire", "water", "electric", "flying", "poison", "ground", "rock", "ice", "steel"],
     rare: ["psychic", "ghost", "fairy", "dragon", "dark", "fighting"],
     legendary: [],
-    mythical: []
+    mythical: [],
+    ultraBeast: [],
+    paradox: [],
   };
   
   // Game configuration
